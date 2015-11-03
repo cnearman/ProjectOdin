@@ -1,15 +1,93 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class Block : MonoBehaviour {
+public class Block 
+{
+	public bool Modified { get; set; };
 
-	// Use this for initialization
-	void Start () {
-	
+	public Block()
+	{
+		this.Modified = true;
+	}
+
+	public virtual Vector2[] FaceUVs(Direction direction)
+	{
+		Vector2[] UVs = new Vector2[4];
+		Tile tilePos = TexturePosition (direction);
+
+		UVs [0] = new Vector2 (tileSize * tilePos.x + tileSize, tileSize * tilePos.y);
+		UVs [1] = new Vector2 (tileSize * tilePos.x + tileSize, tileSize * tilePos.y + tileSize);
+		UVs [2] = new Vector2 (tileSize * tilePos.x, tileSize * tilePos.y);
+		UVs [3] = new Vector2 (tileSize * tilePos.x, tileSize * tilePos.y + tileSize);
+
+		return UVs;
+	}
+
+	public virtual Tile TexturePosition(Direction direction)
+	{
+		Tile tile = new Tile ();
+		tile.x = 0;
+		tile.y = 0;
+		return tile;
+	}
+
+	public virtual bool isSolid(Direction direction)
+	{
+		switch (direction.Id) 
+		{
+		case Direction.Up.Id:
+			return true;
+		case Direction.Down.Id:
+			return true;
+		case Direction.North.Id:
+			return true;
+		case Direction.South.Id:
+			return true;
+		case Direction.Left.Id:
+			return true;
+		case Direction.Right.Id:
+			return true;
+		}
+
+		return false;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	protected virtual MeshData FaceData(int x, int y, int z, Direction dir, MeshData meshData)
+	{
+		meshData.AddVertex(new Vector3(x * dir.Vertices[0,0] + 0.5f,y * dir.Vertices[0,1] + 0.5f, z * dir.Vertices[0,2] + 0.5f));
+		meshData.AddVertex(new Vector3(x * dir.Vertices[1,0] + 0.5f,y * dir.Vertices[1,1] + 0.5f, z * dir.Vertices[1,2] + 0.5f));
+		meshData.AddVertex(new Vector3(x * dir.Vertices[2,0] + 0.5f,y * dir.Vertices[2,1] + 0.5f, z * dir.Vertices[2,2] + 0.5f));
+		meshData.AddVertex(new Vector3(x * dir.Vertices[3,0] + 0.5f,y * dir.Vertices[3,1] + 0.5f, z * dir.Vertices[3,2] + 0.5f));
+
+		meshData.AddQuadTriangles ();
+
+		meshData.uv.AddRange(FaceUVs(dir));
+
+		return meshData;
+	}
+
+	protected virtual MeshData FaceDataUp(int x, int y, int z, MeshData meshData)
+	{
+		return FaceData (x, y, z, Direction.Up, meshData);
+	}
+
+	protected virtual MeshData FaceDataDown(int x, int y, int z, MeshData meshData)
+	{
+		return FaceData(x, y, z, Direction.Down, meshData);
+	}
+
+	protected virtual MeshData FaceDataSouth(int x, int y, int z, MeshData meshData)
+	{
+		return FaceData(x, y, z, Direction.South, meshData);
+	}
+
+	protected virtual MeshData FaceDataLeft(int x, int y, int z, MeshData meshData)
+	{
+		return FaceData(x, y, z, Direction.Left, meshData);
+	}
+
+	protected virtual MeshData FaceDataRight(int x, int y, int z, MeshData meshData)
+	{
+		return FaceData(x, y, z, Direction.Right, meshData);
 	}
 }
