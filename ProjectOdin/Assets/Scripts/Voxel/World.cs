@@ -39,14 +39,7 @@ public class World : MonoBehaviour
             {
                 for (int zi = 0; zi < Chunk.chunkSize; zi++)
                 {
-                    if (yi <= 7)
-                    {
                         SetBlock(x + xi, y + yi, z + zi, new Block());
-                    }
-                    else
-                    {
-                        SetBlock(x + xi, y + yi, z + zi, new Block());
-                    }
                 }
             }
         }
@@ -98,6 +91,8 @@ public class World : MonoBehaviour
         else
         {
             return new BlockAir();
+            //return null;
+            //return new Block();
         }
 
     }

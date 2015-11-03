@@ -9,7 +9,7 @@ public class Chunk : MonoBehaviour
 {
     public Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 
-    public static int chunkSize = 32;
+    public static int chunkSize = 16;
     public bool update = false;
 
     MeshFilter filter;
@@ -104,32 +104,32 @@ public class Chunk : MonoBehaviour
 
         if (!GetBlock(x, y + 1, z).IsSolid(Direction.Down))
         {
-            meshData =  FaceDataUp(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataUp(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y - 1, z).IsSolid(Direction.Up))
         {
-            meshData =  FaceDataDown(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataDown(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y, z + 1).IsSolid(Direction.South))
         {
-            meshData = FaceDataNorth(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataNorth(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y, z - 1).IsSolid(Direction.North))
         {
-            meshData = FaceDataSouth(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataSouth(x, y, z, meshData);
         }
 
         if (!GetBlock(x + 1, y, z).IsSolid(Direction.Left))
         {
-            meshData = FaceDataLeft(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataLeft(x, y, z, meshData);
         }
 
         if (!GetBlock(x - 1, y, z).IsSolid(Direction.Right))
         {
-            meshData = FaceDataRight(x, y, z, meshData);
+            meshData = GetBlock(x, y + 1, z).FaceDataRight(x, y, z, meshData);
         }
 
         return meshData;

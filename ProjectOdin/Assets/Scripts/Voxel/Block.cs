@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class Block 
 {
-	public bool Modified { get; set; };
+	public bool Modified { get; set; }
 
-	public Block()
+    public struct Tile { public int x; public int y; }
+
+    const float tileSize = 0.25f;
+
+    public Block()
 	{
 		this.Modified = true;
 	}
@@ -31,21 +35,21 @@ public class Block
 		return tile;
 	}
 
-	public virtual bool isSolid(Direction direction)
+	public virtual bool IsSolid(Direction direction)
 	{
 		switch (direction.Id) 
 		{
-		case Direction.Up.Id:
+		case 0:
 			return true;
-		case Direction.Down.Id:
+		case 1:
 			return true;
-		case Direction.North.Id:
+		case 2:
 			return true;
-		case Direction.South.Id:
+		case 3:
 			return true;
-		case Direction.Left.Id:
+		case 4:
 			return true;
-		case Direction.Right.Id:
+		case 5:
 			return true;
 		}
 
@@ -66,27 +70,32 @@ public class Block
 		return meshData;
 	}
 
-	protected virtual MeshData FaceDataUp(int x, int y, int z, MeshData meshData)
+	public virtual MeshData FaceDataUp(int x, int y, int z, MeshData meshData)
 	{
 		return FaceData (x, y, z, Direction.Up, meshData);
 	}
 
-	protected virtual MeshData FaceDataDown(int x, int y, int z, MeshData meshData)
+	public virtual MeshData FaceDataDown(int x, int y, int z, MeshData meshData)
 	{
 		return FaceData(x, y, z, Direction.Down, meshData);
 	}
 
-	protected virtual MeshData FaceDataSouth(int x, int y, int z, MeshData meshData)
+    public virtual MeshData FaceDataNorth(int x, int y, int z, MeshData meshData)
+    {
+        return FaceData(x, y, z, Direction.North, meshData);
+    }
+
+    public virtual MeshData FaceDataSouth(int x, int y, int z, MeshData meshData)
 	{
 		return FaceData(x, y, z, Direction.South, meshData);
 	}
 
-	protected virtual MeshData FaceDataLeft(int x, int y, int z, MeshData meshData)
+	public virtual MeshData FaceDataLeft(int x, int y, int z, MeshData meshData)
 	{
 		return FaceData(x, y, z, Direction.Left, meshData);
 	}
 
-	protected virtual MeshData FaceDataRight(int x, int y, int z, MeshData meshData)
+	public virtual MeshData FaceDataRight(int x, int y, int z, MeshData meshData)
 	{
 		return FaceData(x, y, z, Direction.Right, meshData);
 	}
