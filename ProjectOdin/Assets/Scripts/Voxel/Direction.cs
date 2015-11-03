@@ -17,37 +17,67 @@
 		this.XDirection = XDirection;
 		this.YDirection = YDirection;
 		this.ZDirection = ZDirection;
-		if (XDirection != 0) {
-            this.Vertices = new int[,]
+		if (XDirection == 1)
+		{
+			this.Vertices = new int[,]
             {
-                {XDirection, 1, 1},
-                {XDirection, 1, -1},
-                {XDirection, -1, 1},
-                {XDirection, -1, -1}
+                {1, -1, -1},
+                {1, 1, -1},
+                {1, 1, 1},
+                {1, -1, 1}
             };
+		} 
+		else if (XDirection == -1)
+		{
+			this.Vertices = new int[,]
+			{
+				{-1, -1, 1},
+				{-1, 1, 1},
+				{-1, 1, -1},
+				{-1, -1, -1}
+			};
 		}
-		if (YDirection != 0) {
-            this.Vertices = new int[,]
-            {
-                {1, YDirection, 1},
-                {1, YDirection, -1},
-                {-1, YDirection, 1},
-                {-1, YDirection, -1}
+		if (YDirection == 1) {
+			this.Vertices = new int[,]
+			{
+				{-1, 1, 1},
+                {1, 1, 1},
+                {1, 1, -1},
+                {-1, 1, -1}
             };
+		} else if (YDirection == -1) 
+		{
+			this.Vertices = new int[,]
+			{
+				{-1, -1, -1},
+				{1, -1, -1},
+				{1, -1, 1},
+				{-1, -1, 1}
+			};
 		}
-		if (ZDirection != 0) {
-            this.Vertices = new int[,]
+		if (ZDirection == 1) {
+			this.Vertices = new int[,]
             {
-                {1, 1,  ZDirection},
-                {1, -1, ZDirection},
-                {-1, 1, ZDirection},
-                {-1, -1,ZDirection}
+                {1, -1, 1},
+                {1, 1, 1},
+                {-1, 1, 1},
+                {-1, -1,1}
             };
+		} 
+		else if (ZDirection == -1) 
+		{
+			this.Vertices = new int[,]
+			{
+				{-1, -1,  -1},
+				{-1, 1, -1},
+				{1, 1, -1},
+				{1, -1,-1}
+			};
 		}
 	}
-
+	
 	public string Name {get; set;}
-
+	
 	public int Id { get; set; }
 	
 	public int XDirection { get; set; }

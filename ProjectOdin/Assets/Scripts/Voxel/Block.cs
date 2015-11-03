@@ -58,10 +58,10 @@ public class Block
 	
 	protected virtual MeshData FaceData(int x, int y, int z, Direction dir, MeshData meshData)
 	{
-		meshData.AddVertex(new Vector3(x * dir.Vertices[0,0] + 0.5f,y * dir.Vertices[0,1] + 0.5f, z * dir.Vertices[0,2] + 0.5f));
-		meshData.AddVertex(new Vector3(x * dir.Vertices[1,0] + 0.5f,y * dir.Vertices[1,1] + 0.5f, z * dir.Vertices[1,2] + 0.5f));
-		meshData.AddVertex(new Vector3(x * dir.Vertices[2,0] + 0.5f,y * dir.Vertices[2,1] + 0.5f, z * dir.Vertices[2,2] + 0.5f));
-		meshData.AddVertex(new Vector3(x * dir.Vertices[3,0] + 0.5f,y * dir.Vertices[3,1] + 0.5f, z * dir.Vertices[3,2] + 0.5f));
+		meshData.AddVertex(new Vector3(x + dir.Vertices[0,0] * 0.5f,y + dir.Vertices[0,1] * 0.5f, z + dir.Vertices[0,2] * 0.5f));
+		meshData.AddVertex(new Vector3(x + dir.Vertices[1,0] * 0.5f,y + dir.Vertices[1,1] * 0.5f, z + dir.Vertices[1,2] * 0.5f));
+		meshData.AddVertex(new Vector3(x + dir.Vertices[2,0] * 0.5f,y + dir.Vertices[2,1] * 0.5f, z + dir.Vertices[2,2] * 0.5f));
+		meshData.AddVertex(new Vector3(x + dir.Vertices[3,0] * 0.5f,y + dir.Vertices[3,1] * 0.5f, z + dir.Vertices[3,2] * 0.5f));
 
 		meshData.AddQuadTriangles ();
 
