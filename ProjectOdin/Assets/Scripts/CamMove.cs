@@ -19,7 +19,7 @@ public class CamMove : MonoBehaviour {
         rot.y + Input.GetAxis("Mouse Y") * 3);
 
         transform.localRotation = Quaternion.AngleAxis(rot.x, Vector3.up);
-        transform.localRotation = Quaternion.AngleAxis(rot.y, Vector3.left);
+        transform.localRotation *= Quaternion.AngleAxis(rot.y, Vector3.left);
 
         transform.position += transform.forward * 3 * Input.GetAxis("Vertical");
         transform.position += transform.right * 3 * Input.GetAxis("Horizontal");

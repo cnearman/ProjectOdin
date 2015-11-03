@@ -14,20 +14,20 @@ public class Block
 		this.Modified = true;
 	}
 
-	public virtual Vector2[] FaceUVs(Direction direction)
-	{
-		Vector2[] UVs = new Vector2[4];
-		Tile tilePos = TexturePosition (direction);
+    public virtual Vector2[] FaceUVs(Direction direction)
+    {
+        Vector2[] UVs = new Vector2[4];
+        Tile tilePos = TexturePosition(direction);
 
-		UVs [0] = new Vector2 (tileSize * tilePos.x + tileSize, tileSize * tilePos.y);
-		UVs [1] = new Vector2 (tileSize * tilePos.x + tileSize, tileSize * tilePos.y + tileSize);
-		UVs [2] = new Vector2 (tileSize * tilePos.x, tileSize * tilePos.y);
-		UVs [3] = new Vector2 (tileSize * tilePos.x, tileSize * tilePos.y + tileSize);
+        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize, tileSize * tilePos.y);
+        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize, tileSize * tilePos.y + tileSize);
+        UVs[2] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y + tileSize);
+        UVs[3] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y);
 
-		return UVs;
-	}
+        return UVs;
+    }
 
-	public virtual Tile TexturePosition(Direction direction)
+    public virtual Tile TexturePosition(Direction direction)
 	{
 		Tile tile = new Tile ();
 		tile.x = 0;
