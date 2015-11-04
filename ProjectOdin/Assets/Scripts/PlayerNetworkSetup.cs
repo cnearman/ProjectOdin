@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public class PlayerNetworkSetup : NetworkBehaviour {
 
-    public GameObject myCam;
+    [SerializeField] GameObject myCam;
 
 	// Use this for initialization
 	void Start () {
@@ -13,10 +13,5 @@ public class PlayerNetworkSetup : NetworkBehaviour {
             GetComponent<CamMove>().enabled = true;
             myCam.SetActive(true);
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
