@@ -39,7 +39,13 @@ public class World : MonoBehaviour
             {
                 for (int zi = 0; zi < Chunk.chunkSize; zi++)
                 {
+                    if (yi == 0)
+                    {
+                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
+                    } else
+                    {
                         SetBlock(x + xi, y + yi, z + zi, new Block());
+                    }
                 }
             }
         }
@@ -101,8 +107,12 @@ public class World : MonoBehaviour
     {
         Chunk chunk = GetChunk(x, y, z);
 
+        //Debug.Log("found chunk");
+
         if (chunk != null)
         {
+            //Debug.Log("chunk real");
+
             chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block);
             chunk.update = true;
 

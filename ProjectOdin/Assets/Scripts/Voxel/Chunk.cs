@@ -104,32 +104,32 @@ public class Chunk : MonoBehaviour
 
         if (!GetBlock(x, y + 1, z).IsSolid(Direction.Down))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataUp(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataUp(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y - 1, z).IsSolid(Direction.Up))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataDown(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataDown(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y, z + 1).IsSolid(Direction.South))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataNorth(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataNorth(x, y, z, meshData);
         }
 
         if (!GetBlock(x, y, z - 1).IsSolid(Direction.North))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataSouth(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataSouth(x, y, z, meshData);
         }
 
         if (!GetBlock(x + 1, y, z).IsSolid(Direction.Left))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataLeft(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataLeft(x, y, z, meshData);
         }
 
         if (!GetBlock(x - 1, y, z).IsSolid(Direction.Right))
         {
-            meshData = GetBlock(x, y + 1, z).FaceDataRight(x, y, z, meshData);
+            meshData = GetBlock(x, y, z).FaceDataRight(x, y, z, meshData);
         }
 
         return meshData;
