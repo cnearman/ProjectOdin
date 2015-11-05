@@ -51,29 +51,24 @@ public class Player : NetworkBehaviour {
     void Update () {
         if(Input.GetButtonDown("Fire1"))
         {
-            
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100))
             {
-
-                //Debug.Log("fire");
                 Vector3 pos = GetBlockPos(hit);
-                Debug.Log(pos);
-
                 world.GetComponent<World>().SetBlock((int) pos.x, (int) pos.y, (int) pos.z, new BlockAir());
-
-                //EditTerrain.SetBlock(hit, new BlockAir());
-                /*if (EditTerrain.GetBlock(hit).canDamage)
-                {
-                    EditTerrain.GetBlock(hit).health -= 1;
-                    EditTerrain.GetBlock(hit).TryKill(hit);
-                }*/
             }
         }
 
         if(Input.GetButtonDown("Fire2"))
         {
-
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100))
+            {
+                Vector3 pos = GetBlockPos(hit);
+                Vector3 pos2 = pos + hit.normal;
+                Debug.Log(hit.normal);
+                world.GetComponent<World>().SetBlock((int)pos2.x, (int)pos2.y, (int)pos2.z, new Block());
+            }
         }
 
         float v = Input.GetAxis("Vertical");

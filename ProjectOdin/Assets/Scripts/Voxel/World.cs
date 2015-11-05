@@ -41,7 +41,7 @@ public class World : MonoBehaviour
                 {
                     if (yi > 7)
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
                     }
                     else
                     {
