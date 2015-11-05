@@ -60,7 +60,7 @@ public class Player : NetworkBehaviour {
                 Vector3 pos = GetBlockPos(hit);
                 Debug.Log(pos);
 
-                world.GetComponent<World>().SetBlock((int) pos.x, (int) pos.y, (int) pos.z, new BlockGrass());
+                world.GetComponent<World>().SetBlock((int) pos.x, (int) pos.y, (int) pos.z, new BlockAir());
 
                 //EditTerrain.SetBlock(hit, new BlockAir());
                 /*if (EditTerrain.GetBlock(hit).canDamage)

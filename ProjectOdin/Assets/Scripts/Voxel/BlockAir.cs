@@ -6,7 +6,7 @@ public class BlockAir : Block
     public BlockAir()
         : base()
     {
-
+        air = true;
     }
 
     /*public override MeshData Blockdata

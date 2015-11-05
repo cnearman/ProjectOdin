@@ -39,10 +39,11 @@ public class World : MonoBehaviour
             {
                 for (int zi = 0; zi < Chunk.chunkSize; zi++)
                 {
-                    if (yi == 0)
+                    if (yi > 7)
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
-                    } else
+                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                    }
+                    else
                     {
                         SetBlock(x + xi, y + yi, z + zi, new Block());
                     }

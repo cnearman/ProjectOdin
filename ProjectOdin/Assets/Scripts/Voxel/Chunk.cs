@@ -89,7 +89,14 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < chunkSize; z++)
                 {
-                    meshData = BlockData(x, y, z, meshData);
+                    if(blocks[x,y,z].air)
+                    {
+
+                    } else
+                    {
+                        meshData = BlockData(x, y, z, meshData);
+                    }
+                    
                     //meshData = blocks[x, y, z].Blockdata(this, x, y, z, meshData);
                 }
             }

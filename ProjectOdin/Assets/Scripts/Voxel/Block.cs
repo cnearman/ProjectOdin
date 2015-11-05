@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Block 
 {
+    public bool air;
+
 	public bool Modified { get; set; }
 
     public struct Tile { public int x; public int y; }
@@ -12,6 +14,7 @@ public class Block
     public Block()
 	{
 		this.Modified = true;
+        this.air = false;
 	}
 
     public virtual Vector2[] FaceUVs(Direction direction)
@@ -37,6 +40,7 @@ public class Block
 
 	public virtual bool IsSolid(Direction direction)
 	{
+
 		switch (direction.Id) 
 		{
 		case 0:
