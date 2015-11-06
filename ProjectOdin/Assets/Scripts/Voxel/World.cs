@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
-public class World : MonoBehaviour
+public class World : NetworkBehaviour
 {
 
     public string worldName = "world";
@@ -32,7 +33,7 @@ public class World : MonoBehaviour
         chunks.Add(worldPos, newChunk);
 
 
-        
+
         for (int xi = 0; xi < Chunk.chunkSize; xi++)
         {
             for (int yi = 0; yi < Chunk.chunkSize; yi++)
@@ -148,6 +149,28 @@ public class World : MonoBehaviour
                 }
             }
         }
+    }
+
+    //Sets the blocks on the client
+    [ClientRpc]
+    void RpcSetBlock(WorldPos pos, int block)
+    {
+        if (block == 0)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockAir());
+        } else if(block == 1)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new Block());
+        }
+    }
+
+    //The server sends the calls to the client
+    public void SetBlock(WorldPos pos, int block)
+    {
+        if (!isServer)//only the server needs to do this
+            return;
+
+        RpcSetBlock(pos, block);
     }
 
 }

@@ -10,7 +10,7 @@ public class PlayerNetworkSetup : NetworkBehaviour {
 	void Start () {
 	    if(isLocalPlayer)
         {
-            GetComponent<Player>().enabled = true;
+            //GetComponent<Player>().enabled = true;
             myCam.enabled = true;
         }
 	}
