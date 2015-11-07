@@ -13,8 +13,10 @@ public class Player : NetworkBehaviour {
         world = GameObject.Find("World");
 	}
 
-    //player speed
+    //player speed and jump speed
     public float speed;
+    public float jumpSpeed;
+
     //player rotation
     Vector2 rot;
 
@@ -43,6 +45,12 @@ public class Player : NetworkBehaviour {
                 {
                     CmdSetBlock(SelectBlock.GetBlockPos(hit, true), 1);
                 }
+            }
+
+            if(Input.GetButtonDown("Jump"))
+            {
+                GetComponent<Rigidbody>().velocity = new Vector3(GetComponent<Rigidbody>().velocity.x, 0f, GetComponent<Rigidbody>().velocity.z);
+                GetComponent<Rigidbody>().AddForce(new Vector3(0f, jumpSpeed, 0f));
             }
 
             //get movment inputs
