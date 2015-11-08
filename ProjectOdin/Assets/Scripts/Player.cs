@@ -5,13 +5,13 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour {
 
     //The world object in the scene
-    public GameObject world;
+    //public GameObject world;
 
 	// Use this for initialization
     // Grabs the world object
-	void Start () {
-        world = GameObject.Find("World");
-	}
+	//void Start () {
+    //    world = GameObject.Find("World");
+	//}
 
     //player speed and jump speed
     public float speed;
