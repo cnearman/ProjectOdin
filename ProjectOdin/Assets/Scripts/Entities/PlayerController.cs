@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 using EventSystem;
 
@@ -14,6 +13,8 @@ public class PlayerController : NetworkBehaviour, EventListener
     private Movement Movement;
     private Jump Jump;
 
+    private TriggerOnActivation SpeedBoost;
+
     public GameObject CameraContainer;
 
     void Start()
@@ -24,6 +25,7 @@ public class PlayerController : NetworkBehaviour, EventListener
         this.Movement = this.gameObject.GetComponent<Movement>();
         this.Movement.CameraContainer = this.CameraContainer; 
         this.Jump = this.gameObject.GetComponent<Jump>();
+        this.SpeedBoost = this.gameObject.GetComponent<TriggerOnActivation>();
     }
 
     public void EventReceived(BaseEvent e)
@@ -52,7 +54,7 @@ public class PlayerController : NetworkBehaviour, EventListener
                 }
                 else if (bE.ButtonAction == ButtonAction.Y)
                 {
-
+                    this.SpeedBoost.Activate();
                 }
                 else if (bE.ButtonAction == ButtonAction.RightBumper)
                 {
