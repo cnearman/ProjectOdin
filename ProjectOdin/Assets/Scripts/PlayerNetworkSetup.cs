@@ -13,5 +13,12 @@ public class PlayerNetworkSetup : NetworkBehaviour {
             //GetComponent<Player>().enabled = true;
             myCam.enabled = true;
         }
+
+        if(isServer)
+        {
+            GetComponent<TeamTag>().teamNumber = GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestTeam();
+            GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestSpawn(gameObject);
+        }
 	}
+
 }

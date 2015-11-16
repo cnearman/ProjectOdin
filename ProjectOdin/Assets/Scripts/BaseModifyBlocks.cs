@@ -29,8 +29,15 @@ public class BaseModifyBlocks : NetworkBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(pos, dir, out hit, 100))
         {
-            CmdSetBlock(SelectBlock.GetBlockPos(hit, adjacent), state);
+            SetBlock(SelectBlock.GetBlockPos(hit, adjacent), state);
+            //CmdSetBlock(SelectBlock.GetBlockPos(hit, adjacent), state);
         }
+    }
+
+    public void SetBlock(WorldPos pos, int block)
+    {
+        World.SetBlock(pos.x, pos.y, pos.z, block);
+        CmdSetBlock(pos, block);
     }
 
     //This command is the set block command.

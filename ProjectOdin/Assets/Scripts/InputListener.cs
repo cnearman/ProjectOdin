@@ -18,7 +18,7 @@ public class InputListener : MonoBehaviour {
     public string LeftStickYAxis = "L_YAxis_";
 
 
-    void FixedUpdate () {
+    void Update() {// FixedUpdate () {
         if (Input.GetButtonDown("Fire1"))
         {
             EventManager.Broadcast(new ButtonEvent(1, ButtonAction.RightBumper));

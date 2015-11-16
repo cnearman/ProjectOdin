@@ -139,7 +139,7 @@ public class World : NetworkBehaviour
 
     void Start()
     {
-        for (int x = -8; x < 8; x++)
+        /*for (int x = -8; x < 8; x++)
         {
             for (int y = 1; y < 3; y++)
             {
@@ -148,18 +148,30 @@ public class World : NetworkBehaviour
                     CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize);
                 }
             }
-        }
+        }*/
 
-        /*for (int x = -2; x < 2; x++)
+        for (int x = -4; x < 4; x++)
         {
             for (int y = -2; y < 2; y++)
             {
-                for (int z = -2; z < 2; z++)
+                for (int z = -8; z < 8; z++)
                 {
                     CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize);
                 }
             }
-        }*/
+        }
+    }
+
+    public void SetBlock(int x, int y, int z, int block)
+    {
+        if (block == 0)
+        {
+            SetBlock(x, y, z, new BlockAir());
+        }
+        else if (block == 1)
+        {
+            SetBlock(x, y, z, new Block());
+        }
     }
 
     //Sets the blocks on the client
