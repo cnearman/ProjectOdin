@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Targeter))]
 [RequireComponent(typeof(Effect))]
 
-public class TriggerOnActivation : BaseClass {
+public class TriggerOnActivation : BaseNetworkClass {
 
     private Targeter Targeter;
     private IEnumerable<Effect> Effects;
@@ -15,7 +16,8 @@ public class TriggerOnActivation : BaseClass {
         Effects = GetComponents<Effect>();
     }
 
-    public void Activate()
+    [Command]
+    public void CmdActivate()
     {
         IEnumerable <GameObject> Targets = Targeter.GetTargets();
         foreach(Effect currentEffect in Effects)
