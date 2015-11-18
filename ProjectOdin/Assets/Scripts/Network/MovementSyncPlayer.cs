@@ -6,31 +6,41 @@ public class MovementSyncPlayer : NetworkBehaviour
 {
     public float sendRate;
     float curSendRate;
+    int myName;
 
     // Use this for initialization
     void Start()
     {
-
+        if(isLocalPlayer)
+        {
+            myName = Random.Range(10, 1000);
+        } else
+        {
+            myName = 0;
+        }
     }
 
     [ClientRpc]
-    void RpcChangePos(Vector3 pos)
+    void RpcChangePos(Vector3 pos, int na)
     {
-        transform.position = pos;
+        if (myName != na)
+        {
+            transform.position = pos;
+        }
     }
 
     [Command]
-    void CmdChangePos(Vector3 pos)
+    void CmdChangePos(Vector3 pos, int na)
     {
-        ChangePos(pos);
+        ChangePos(pos, na);
     }
 
-    void ChangePos(Vector3 pos)
+    void ChangePos(Vector3 pos, int na)
     {
         if (!isServer)
             return;
 
-        RpcChangePos(pos);
+        RpcChangePos(pos, na);
     }
 
    
@@ -42,7 +52,7 @@ public class MovementSyncPlayer : NetworkBehaviour
         {
             if (curSendRate <= 0)
             {
-                CmdChangePos(transform.position);
+                CmdChangePos(transform.position, myName);
                 curSendRate = sendRate;
             }
             else
