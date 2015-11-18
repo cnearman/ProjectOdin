@@ -11,7 +11,10 @@ public class Movement : NetworkBehaviour {
         RigidBodyComponent = GetComponent<Rigidbody>();
     }
 
+
+    [SyncVar]
     public float Speed;
+
     public float MotionInX { get; set; }
     public float MotionInY { get; set; }
     public float RotationLateral { get; set; }

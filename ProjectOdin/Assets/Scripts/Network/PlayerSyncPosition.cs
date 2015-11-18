@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-[NetworkSettings(channel = 0, sendInterval = 0.1f)]
+[NetworkSettings(channel = 0, sendInterval = 0.01f)]
 public class PlayerSyncPosition : NetworkBehaviour
 {
 
