@@ -42,11 +42,13 @@ public class World : NetworkBehaviour
                 {
                     if (yi > 7)
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
+                        //SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
+                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
                     }
                     else
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new Block());
+                        //SetBlock(x + xi, y + yi, z + zi, new Block());
+                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
                     }
                 }
             }
@@ -150,6 +152,8 @@ public class World : NetworkBehaviour
             }
         }*/
 
+        //first make the map
+
         for (int x = -4; x < 4; x++)
         {
             for (int y = -2; y < 2; y++)
@@ -160,6 +164,15 @@ public class World : NetworkBehaviour
                 }
             }
         }
+
+        //now make the object
+        GameObject[] voxelObs = GameObject.FindGameObjectsWithTag("VoxelMesh");
+        foreach(GameObject vOb in voxelObs)
+        {
+            vOb.GetComponent<VoxelObject>().BuildObject();
+        }
+
+
     }
 
     public void SetBlock(int x, int y, int z, int block)
