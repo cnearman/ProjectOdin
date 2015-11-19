@@ -25,6 +25,8 @@ public class MeshToVoxel : MonoBehaviour {
     public InputField cycleTime;
     public InputField numPerCycle;
 
+    public InputField saveName;
+
     // Use this for initialization
     void Start () {
         //cubeSize.text = "" + 1;
@@ -125,9 +127,18 @@ public class MeshToVoxel : MonoBehaviour {
         nVoxelObj.GetComponent<VoxelObject>().blocks = blocks;
         nVoxelObj.GetComponent<VoxelObject>().cubeSide = cubeSide;
 
-        int preventOverwrite = UnityEngine.Random.Range(0, 100000);
+        GameObject[] placeHolders = GameObject.FindGameObjectsWithTag("ScanMesh");
 
-        PrefabUtility.CreatePrefab("Assets/PastryStore/freshPie" + preventOverwrite + ".prefab", nVoxelObj);
+        foreach(GameObject ph in placeHolders)
+        {
+            ph.transform.parent = nVoxelObj.transform;
+        }
+
+        //int preventOverwrite = UnityEngine.Random.Range(0, 100000);
+
+        string nameOfOb = saveName.text;
+
+        PrefabUtility.CreatePrefab("Assets/PastryStore/" + nameOfOb + ".prefab", nVoxelObj);
     }
 
     public void AnalyzeMesh()
