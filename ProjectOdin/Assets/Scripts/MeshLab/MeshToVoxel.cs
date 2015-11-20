@@ -34,9 +34,9 @@ public class MeshToVoxel : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //cubeSize.text = "" + 1;
-        //cycleTime.text = "" + 1;
-        //numPerCycle.text = "" + 1;
+        cubeSize.text = "" + 16;
+        cycleTime.text = "" + 0.05f;
+        numPerCycle.text = "" + 16;
 	}
 	
 	// Update is called once per frame
