@@ -17,6 +17,8 @@ public class MeshToVoxel : MonoBehaviour {
     float curBuildRate;
     int probesPerCycle;
 
+    float pTol;
+
     public GameObject probe;
     public GameObject voxObj;
 
@@ -24,11 +26,14 @@ public class MeshToVoxel : MonoBehaviour {
 
     public GameObject place;
 
+    public GameObject scanBounds;
+
 
     public Text estimatedRunTime;
     public InputField cubeSize;
     public InputField cycleTime;
     public InputField numPerCycle;
+    public InputField tolerance;
 
     public InputField saveName;
 
@@ -37,10 +42,14 @@ public class MeshToVoxel : MonoBehaviour {
         cubeSize.text = "" + 16;
         cycleTime.text = "" + 0.05f;
         numPerCycle.text = "" + 16;
+        tolerance.text = "" + 1f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        scanBounds.transform.localScale = new Vector3(cubeSide, cubeSide, cubeSide);
+        scanBounds.transform.position = new Vector3((float)cubeSide / 2f - 0.5f, (float)cubeSide / 2f - 0.5f, (float)cubeSide / 2f - 0.5f);
+
 	    if(isRunning)
         {
             if(curBuildRate <= 0f)
@@ -63,6 +72,7 @@ public class MeshToVoxel : MonoBehaviour {
             cubeSide = Convert.ToInt32(cubeSize.text);
             buildRate = (float)Convert.ToDouble(cycleTime.text);
             probesPerCycle = Convert.ToInt32(numPerCycle.text);
+            pTol = (float)Convert.ToDouble(tolerance.text);
 
             estimatedRunTime.text = "Est Run Time: " + (float)(cubeSide * cubeSide * cubeSide) / (float)probesPerCycle * (float)buildRate;
         }
@@ -119,6 +129,11 @@ public class MeshToVoxel : MonoBehaviour {
     {
         GameObject curProbe = (GameObject) Instantiate(probe, new Vector3(i, j, k), Quaternion.identity);
         curProbe.GetComponent<ProbeBlock>().myMaster = gameObject;
+
+        if(pTol != 1)
+        {
+            curProbe.GetComponent<BoxCollider>().size = new Vector3(pTol, pTol, pTol);
+        }
     }
 
     public void VoxelHere(Vector3 pos)
