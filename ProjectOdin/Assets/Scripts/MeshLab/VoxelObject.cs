@@ -7,11 +7,40 @@ public class VoxelObject : NetworkBehaviour {
     public int cubeSide;
 
     //int[,,] blocksArray;
+    public void BuildObjectLab()
+    {
 
+        MeshLabWorld World = GameObject.Find("MeshLabWorld").GetComponent<MeshLabWorld>();
+
+
+        Debug.Log("start print");
+
+        for (int i = 0; i < cubeSide; i++)
+        {
+            for (int j = 0; j < cubeSide; j++)
+            {
+                for (int k = 0; k < cubeSide; k++)
+                {
+                    //Debug.Log(i * cubeSide * cubeSide + j * cubeSide + k);
+
+                    if (blocks[i * cubeSide * cubeSide + j * cubeSide + k] == 1)
+                    {
+                        //Debug.Log("print");
+                        World.SetBlock((int)transform.position.x + i, (int)transform.position.y + j, (int)transform.position.z + k, new Block());
+                    }
+                }
+            }
+        }
+
+        Debug.Log("end print");
+
+       
+    }
 
     public void BuildObject()
     {
-        World World = GameObject.Find("World").GetComponent<World>();
+       World World = GameObject.Find("World").GetComponent<World>();
+
 
         Debug.Log("start print");
 

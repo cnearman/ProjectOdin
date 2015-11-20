@@ -20,6 +20,11 @@ public class MeshToVoxel : MonoBehaviour {
     public GameObject probe;
     public GameObject voxObj;
 
+    public GameObject mlWorld;
+
+    public GameObject place;
+
+
     public Text estimatedRunTime;
     public InputField cubeSize;
     public InputField cycleTime;
@@ -127,16 +132,32 @@ public class MeshToVoxel : MonoBehaviour {
         nVoxelObj.GetComponent<VoxelObject>().blocks = blocks;
         nVoxelObj.GetComponent<VoxelObject>().cubeSide = cubeSide;
 
+        
+
+        mlWorld.GetComponent<MeshLabWorld>().GenerateVoxelVer(cubeSide);
+
         GameObject[] placeHolders = GameObject.FindGameObjectsWithTag("ScanMesh");
 
-        foreach(GameObject ph in placeHolders)
-        {
-            ph.transform.parent = nVoxelObj.transform;
-        }
-
-        //int preventOverwrite = UnityEngine.Random.Range(0, 100000);
 
         string nameOfOb = saveName.text;
+        int meshNum = 0;
+
+        foreach (GameObject ph in placeHolders)
+        {
+
+            AssetDatabase.CreateAsset( ph.GetComponent<MeshFilter>().mesh, "Assets/PastryStore/PieMeshes/" + nameOfOb + meshNum + ".asset");
+            AssetDatabase.SaveAssets();
+
+            GameObject holder = (GameObject)Instantiate(place, Vector3.zero, Quaternion.identity);
+            holder.GetComponent<MeshFilter>().mesh = ph.GetComponent<MeshFilter>().mesh;
+
+            holder.transform.parent = nVoxelObj.transform;
+
+            meshNum += 1;
+        }
+
+
+        
 
         PrefabUtility.CreatePrefab("Assets/PastryStore/" + nameOfOb + ".prefab", nVoxelObj);
     }
