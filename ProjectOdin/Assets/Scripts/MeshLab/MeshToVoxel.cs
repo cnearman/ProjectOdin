@@ -148,7 +148,7 @@ public class MeshToVoxel : MonoBehaviour {
             AssetDatabase.CreateAsset( ph.GetComponent<MeshFilter>().mesh, "Assets/PastryStore/PieMeshes/" + nameOfOb + meshNum + ".asset");
             AssetDatabase.SaveAssets();
 
-            GameObject holder = (GameObject)Instantiate(place, Vector3.zero, Quaternion.identity);
+            GameObject holder = (GameObject)Instantiate(place, ph.transform.position, Quaternion.identity);
             holder.GetComponent<MeshFilter>().mesh = ph.GetComponent<MeshFilter>().mesh;
 
             holder.transform.parent = nVoxelObj.transform;

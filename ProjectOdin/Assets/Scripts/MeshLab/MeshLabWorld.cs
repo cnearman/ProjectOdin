@@ -131,6 +131,11 @@ public class MeshLabWorld : MonoBehaviour
 
         int numOfChunks = cubeSize / 16;
 
+        if(cubeSize % 16 != 0)
+        {
+            numOfChunks += 1;
+        }
+
         for (int x = 0; x < numOfChunks; x++)
         {
             for (int y = 0; y < numOfChunks; y++)
