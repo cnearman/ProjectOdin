@@ -8,6 +8,7 @@ using System.Collections;
 public class Chunk : MonoBehaviour
 {
     public Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
+    public int[,,] blockInt = new int[chunkSize, chunkSize, chunkSize];
 
     public static int chunkSize = 16;
     public bool update = false;
@@ -20,6 +21,42 @@ public class Chunk : MonoBehaviour
 
     public bool rendered;
 
+    public void BlockToInt()
+    {
+        for(int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    blockInt[x, y, z] = blocks[x, y, z].blockInt;
+                }
+            }
+        }
+    }
+
+    public void IntToBlock()
+    {
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    if(blockInt[x,y,z] == 0)
+                    {
+                        blocks[x, y, z] = new BlockAir();
+                    } else if (blockInt[x, y, z] == 1)
+                    {
+                        blocks[x, y, z] = new Block();
+                    } else if (blockInt[x, y, z] == 2)
+                    {
+                        blocks[x, y, z] = new BlockGrass();
+                    }
+                }
+            }
+        }
+    }
 
     // Use this for initialization
     void Start()

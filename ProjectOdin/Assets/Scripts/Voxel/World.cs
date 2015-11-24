@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class World : NetworkBehaviour
 {
 
-    public string worldName = "world";
+    public string worldName;
 
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public GameObject chunkPrefab;
@@ -32,7 +32,12 @@ public class World : NetworkBehaviour
         //Add it to the chunks dictionary with the position as the key
         chunks.Add(worldPos, newChunk);
 
-
+        bool loaded = Serialization.Load(newChunk);
+        if (loaded)
+        {
+            newChunk.update = true;
+            return;
+        }
 
         for (int xi = 0; xi < Chunk.chunkSize; xi++)
         {
@@ -42,13 +47,13 @@ public class World : NetworkBehaviour
                 {
                     if (yi > 7)
                     {
-                        //SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
-                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
+                        //SetBlock(x + xi, y + yi, z + zi, new BlockAir());
                     }
                     else
                     {
-                        //SetBlock(x + xi, y + yi, z + zi, new Block());
-                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        SetBlock(x + xi, y + yi, z + zi, new Block());
+                        //SetBlock(x + xi, y + yi, z + zi, new BlockAir());
                     }
                 }
             }
@@ -62,6 +67,7 @@ public class World : NetworkBehaviour
         Chunk chunk = null;
         if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
         {
+            //Serialization.SaveChunk(chunk);
             UnityEngine.Object.Destroy(chunk.gameObject);
             chunks.Remove(new WorldPos(x, y, z));
         }
@@ -173,6 +179,25 @@ public class World : NetworkBehaviour
         }
 
 
+    }
+
+    public void SaveAll()
+    {
+        for (int x = -4; x < 4; x++)
+        {
+            for (int y = -2; y < 2; y++)
+            {
+                for (int z = -8; z < 8; z++)
+                {
+                    Chunk chunk = null;
+                    if (chunks.TryGetValue(new WorldPos(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize), out chunk))
+                    {
+                        Serialization.SaveChunk(chunk);
+                        Debug.Log("saving chunk");
+                    }
+                }
+            }
+        }
     }
 
     public void SetBlock(int x, int y, int z, int block)

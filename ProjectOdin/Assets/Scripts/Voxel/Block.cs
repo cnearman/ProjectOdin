@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class Block 
 {
+    public int blockInt;
+
     public bool air;
 
 	public bool Modified { get; set; }
@@ -13,6 +17,8 @@ public class Block
 
     public Block()
 	{
+        this.blockInt = 1;
+
 		this.Modified = true;
         this.air = false;
 	}

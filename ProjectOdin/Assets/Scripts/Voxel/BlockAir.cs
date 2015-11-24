@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;       //Add this line
 
+[Serializable]
 public class BlockAir : Block
 {
     public BlockAir()
         : base()
     {
+        blockInt = 0;
         air = true;
     }
 

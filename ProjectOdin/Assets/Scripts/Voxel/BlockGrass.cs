@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;       //Add this line
 
+[Serializable]
 public class BlockGrass : Block
 {
 
     public BlockGrass()
         : base()
     {
-
+        blockInt = 2;
     }
 
     public override Tile TexturePosition(Direction direction)
