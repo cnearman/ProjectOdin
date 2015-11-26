@@ -11,7 +11,7 @@ public class World : NetworkBehaviour
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public GameObject chunkPrefab;
 
-    public void CreateChunk(int x, int y, int z)
+    public void CreateChunk(int x, int y, int z, int type)
     {
         //the coordinates of this chunk in the world
         WorldPos worldPos = new WorldPos(x, y, z);
@@ -39,6 +39,7 @@ public class World : NetworkBehaviour
             return;
         }
 
+        
         for (int xi = 0; xi < Chunk.chunkSize; xi++)
         {
             for (int yi = 0; yi < Chunk.chunkSize; yi++)
@@ -47,17 +48,30 @@ public class World : NetworkBehaviour
                 {
                     if (yi > 7)
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
-                        //SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        if (type == 1)
+                        {
+                            SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
+                        }
+                        else
+                        {
+                            SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        }
                     }
                     else
                     {
-                        SetBlock(x + xi, y + yi, z + zi, new Block());
-                        //SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        if (type == 1)
+                        {
+                            SetBlock(x + xi, y + yi, z + zi, new Block());
+                        }
+                        else
+                        {
+                            SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                        }
                     }
                 }
             }
         }
+        
 
         newChunk.SetBlocksUnmodified();
     }
@@ -166,7 +180,14 @@ public class World : NetworkBehaviour
             {
                 for (int z = -8; z < 8; z++)
                 {
-                    CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize);
+                    if (y == -2)
+                    {
+                        CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize, 1);
+                    }
+                    else
+                    {
+                        CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize, 0);
+                    }
                 }
             }
         }
@@ -193,7 +214,7 @@ public class World : NetworkBehaviour
                     if (chunks.TryGetValue(new WorldPos(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize), out chunk))
                     {
                         Serialization.SaveChunk(chunk);
-                        Debug.Log("saving chunk");
+                        //Debug.Log("saving chunk");
                     }
                 }
             }
@@ -210,6 +231,10 @@ public class World : NetworkBehaviour
         {
             SetBlock(x, y, z, new Block());
         }
+        else if (block == 2)
+        {
+            SetBlock(x, y, z, new BlockGrass());
+        }
     }
 
     //Sets the blocks on the client
@@ -219,9 +244,14 @@ public class World : NetworkBehaviour
         if (block == 0)
         {
             SetBlock(pos.x, pos.y, pos.z, new BlockAir());
-        } else if(block == 1)
+        }
+        else if(block == 1)
         {
             SetBlock(pos.x, pos.y, pos.z, new Block());
+        }
+        else if (block == 2)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockGrass());
         }
     }
 

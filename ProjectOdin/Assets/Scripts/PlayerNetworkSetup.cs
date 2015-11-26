@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class PlayerNetworkSetup : NetworkBehaviour {
 
     [SerializeField] Camera myCam;
+    public bool levelLab;
 
 	// Use this for initialization
 	void Start () {
@@ -12,12 +13,25 @@ public class PlayerNetworkSetup : NetworkBehaviour {
         {
             //GetComponent<Player>().enabled = true;
             myCam.enabled = true;
+
+            if(levelLab)
+            {
+                GameObject.Find("LevelTools").GetComponent<SelectTools>().user = gameObject;
+            }
+
         }
 
         if(isServer)
         {
-            GetComponent<TeamTag>().teamNumber = GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestTeam();
-            GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestSpawn(gameObject);
+            if (levelLab)
+            {
+                gameObject.transform.position = new Vector3(0f, 40f, 0f);
+            }
+            else
+            {
+                GetComponent<TeamTag>().teamNumber = GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestTeam();
+                GameObject.Find("GameMaster").GetComponent<GameMaster>().RequestSpawn(gameObject);
+            }
         }
 	}
 

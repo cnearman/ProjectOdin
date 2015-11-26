@@ -5,19 +5,29 @@ using UnityEngine.Networking;
 public class BaseModifyBlocks : NetworkBehaviour {
     World World;
 
+    public int selectedBlock;
+    public bool inMenu;
+
     void Start()
     {
         World = GameObject.Find("World").GetComponent<World>();
+        selectedBlock = 1;
     }
     
     public void CreateDefaultBlock(Vector3 pos, Vector3 dir)
     {
-        this.ModifyBlock(pos, dir, true, 1);
+        if (!inMenu)
+        {
+            this.ModifyBlock(pos, dir, true, selectedBlock);
+        }
     }
 
     public void DestroyBlock(Vector3 pos, Vector3 dir)
     {
-        this.ModifyBlock(pos, dir, false, 0);
+        if (!inMenu)
+        {
+            this.ModifyBlock(pos, dir, false, 0);
+        }
     }
 
     private void ModifyBlock(Vector3 pos, Vector3 dir, bool adjacent, int state)

@@ -25,7 +25,7 @@ public class InputListener : MonoBehaviour {
         }
         if (Input.GetButtonDown("Fire2"))
         {
-            //EventManager.Broadcast(new ButtonEvent(1, ButtonAction.LeftBumper));
+            EventManager.Broadcast(new ButtonEvent(1, ButtonAction.LeftBumper));
         }
         if (Input.GetButtonDown("Jump"))
         {
@@ -33,7 +33,7 @@ public class InputListener : MonoBehaviour {
         }
         if (Input.GetButtonDown("Fire2"))
         {
-            EventManager.Broadcast(new ButtonEvent(1, ButtonAction.Y));
+            //EventManager.Broadcast(new ButtonEvent(1, ButtonAction.Y));
         }
 
 
