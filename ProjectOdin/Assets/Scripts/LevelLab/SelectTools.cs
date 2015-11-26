@@ -34,12 +34,19 @@ public class SelectTools : MonoBehaviour {
     {
         if(obj == 0)
         {
+            if(placeTemp != null)
+            {
+                Destroy(placeTemp);
+            }
+
             //objectToPlace = object0;
             placeTemp = (GameObject) Instantiate(object0, user.transform.position, Quaternion.identity);
-            offsetX = 0;
-            offsetY = 0;
-            offsetZ = 0;
+            offsetX = -placeTemp.GetComponent<VoxelObject>().cubeSide / 2;
+            offsetY = -placeTemp.GetComponent<VoxelObject>().cubeSide / 2;
+            offsetZ = -placeTemp.GetComponent<VoxelObject>().cubeSide / 2;
             placingObject = true;
+
+            PullUpObjectMenu();
         }
     }
 
@@ -50,6 +57,7 @@ public class SelectTools : MonoBehaviour {
         {
             user.GetComponent<BaseModifyBlocks>().selectedBlock = block;
         }
+        PullUpBlockMenu();
     }
 
     public void PullUpBlockMenu()
