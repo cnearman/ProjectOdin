@@ -134,7 +134,9 @@ public class SelectTools : MonoBehaviour {
         if(Input.GetButtonDown("ObjPlace"))
         {
             placingObject = false;
+            WorldPos postemp = new WorldPos((int)placeTemp.transform.position.x, (int)placeTemp.transform.position.y, (int)placeTemp.transform.position.z);
             placeTemp.GetComponent<VoxelObject>().BuildObject();
+            user.GetComponent<OnlineObjects>().CmdSpawnVoxelObject(postemp, 0);
         }
 
 

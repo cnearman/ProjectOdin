@@ -11,6 +11,8 @@ public class World : NetworkBehaviour
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public GameObject chunkPrefab;
 
+    public GameObject[] voxObjects;
+
     public void CreateChunk(int x, int y, int z, int type)
     {
         //the coordinates of this chunk in the world
@@ -235,6 +237,22 @@ public class World : NetworkBehaviour
         {
             SetBlock(x, y, z, new BlockGrass());
         }
+    }
+
+    [ClientRpc]
+    void RpcVoxelObject(WorldPos pos, int obj)
+    {
+
+        GameObject vox = (GameObject)Instantiate(voxObjects[obj], new Vector3(pos.x, pos.y, pos.z), Quaternion.identity);
+        vox.GetComponent<VoxelObject>().BuildObject();
+    }
+
+    public void MakeObject(WorldPos pos, int obj)
+    {
+        if (!isServer)
+            return;
+
+        RpcVoxelObject(pos, obj);
     }
 
     //Sets the blocks on the client
