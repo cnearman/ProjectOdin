@@ -13,19 +13,33 @@ public class PlayerController : NetworkBehaviour, EventListener
     private Movement Movement;
     private Jump Jump;
 
-    private TriggerOnActivation SpeedBoost;
+    private TriggerOnActivation[] internalAbilities;
+
+    public GameObject[] Abilities;
 
     public GameObject CameraContainer;
+
+    void Awake()
+    {
+        this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
+        this.Movement = this.gameObject.GetComponent<Movement>();
+        this.Movement.CameraContainer = this.CameraContainer;
+        this.Jump = this.gameObject.GetComponent<Jump>();
+        int count = 0;
+        internalAbilities = new TriggerOnActivation[Abilities.Length];
+        foreach (GameObject ability in Abilities)
+        {
+            internalAbilities[count] = ability.GetComponent<TriggerOnActivation>();
+            internalAbilities[count].Initialize(gameObject, this);
+            internalAbilities[count].Owner = gameObject;
+            count++;
+        }
+    }
 
     void Start()
     {
         EventManager.RegisterListener(this, TypeOfEvent.ButtonEvent);
         EventManager.RegisterListener(this, TypeOfEvent.AxisEvent);
-        this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
-        this.Movement = this.gameObject.GetComponent<Movement>();
-        this.Movement.CameraContainer = this.CameraContainer; 
-        this.Jump = this.gameObject.GetComponent<Jump>();
-        this.SpeedBoost = this.gameObject.GetComponent<TriggerOnActivation>();
     }
 
     public void EventReceived(BaseEvent e)
@@ -50,11 +64,12 @@ public class PlayerController : NetworkBehaviour, EventListener
                 }
                 else if (bE.ButtonAction == ButtonAction.X)
                 {
-                    this.JumpAction();
+                    //this.JumpAction();
+                    this.CmdActivateAbility(0);
                 }
                 else if (bE.ButtonAction == ButtonAction.Y)
                 {
-                    this.SpeedBoost.CmdActivate();
+                    //this.SpeedBoost.CmdActivate();
                 }
                 else if (bE.ButtonAction == ButtonAction.RightBumper)
                 {
@@ -105,6 +120,12 @@ public class PlayerController : NetworkBehaviour, EventListener
     private void CreateBlockInRay()
     {
         BlockModifier.CreateDefaultBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
+    }
+
+    [Command]
+    private void CmdActivateAbility(int abilityNumber)
+    {
+        internalAbilities[abilityNumber].Activate();
     }
 }
 

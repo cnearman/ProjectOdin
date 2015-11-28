@@ -8,7 +8,7 @@ public class BaseModifyBlocks : NetworkBehaviour {
     public int selectedBlock;
     public bool inMenu;
 
-    void Start()
+    void Awake()
     {
         World = GameObject.Find("World").GetComponent<World>();
         selectedBlock = 1;

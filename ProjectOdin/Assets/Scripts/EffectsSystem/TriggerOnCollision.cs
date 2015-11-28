@@ -7,7 +7,7 @@ public class TriggerOnCollision : BaseClass {
 
     private IEnumerable<Effect> Effects;
 
-    void Start()
+    void Awake()
     {
         Effects = GetComponents<Effect>();
     }

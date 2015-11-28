@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Effect : BaseClass
+public interface Effect 
 {
-    public abstract void ApplyEffect(GameObject target);
+    MonoBehaviour Owner { get; set; }
+    void ApplyEffect(GameObject target);
 }

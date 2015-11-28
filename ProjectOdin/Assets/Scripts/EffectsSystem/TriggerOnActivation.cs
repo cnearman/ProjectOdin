@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Targeter))]
@@ -7,17 +8,24 @@ using UnityEngine.Networking;
 
 public class TriggerOnActivation : BaseNetworkClass {
 
-    private Targeter Targeter;
-    private IEnumerable<Effect> Effects;
+    public GameObject Owner;
 
-    void Start()
+    public Targeter Targeter;
+    public Effect[] Effects;
+
+    public void Initialize(GameObject Owner, MonoBehaviour be)
     {
         Targeter = GetComponent<Targeter>();
+        this.Owner = Owner;
+        Targeter.Owner = Owner;
         Effects = GetComponents<Effect>();
+        foreach(Effect e in Effects)
+        {
+            e.Owner = be;
+        }
     }
 
-    [Command]
-    public void CmdActivate()
+    public void Activate()
     {
         IEnumerable <GameObject> Targets = Targeter.GetTargets();
         foreach(Effect currentEffect in Effects)
