@@ -28,8 +28,8 @@ public class BlockGrass : Block
                 return tile;
         }*/
 
-        tile.x = 3;
-        tile.y = 0;
+        tile.x = 7;
+        tile.y = 1;
 
         return tile;
     }

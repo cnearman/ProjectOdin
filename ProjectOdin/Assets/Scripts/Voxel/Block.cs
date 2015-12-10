@@ -13,7 +13,7 @@ public class Block
 
     public struct Tile { public int x; public int y; }
 
-    const float tileSize = 0.25f;
+    const float tileSize = 0.0625f;
 
     public Block()
 	{
@@ -39,8 +39,8 @@ public class Block
     public virtual Tile TexturePosition(Direction direction)
 	{
 		Tile tile = new Tile ();
-		tile.x = 0;
-		tile.y = 0;
+		tile.x = 4;
+		tile.y = 4;
 		return tile;
 	}
 
