@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class Targeter : BaseClass  {
+public interface Targeter
+{
+    GameObject Owner { get; set; }
 
-    public abstract IEnumerable<GameObject> GetTargets();
+    IEnumerable<GameObject> GetTargets();
 }

@@ -3,17 +3,12 @@ using System.Collections.Generic;
 
 
 
-public class TargetSelf : Targeter
+public class TargetSelf : BaseClass, Targeter
 {
-    GameObject Self;
+    public GameObject Owner { get; set; }
 
-    void Start()
+    public IEnumerable<GameObject> GetTargets()
     {
-        Self = gameObject;
-    }
-
-    public override IEnumerable<GameObject> GetTargets()
-    {
-        return new List<GameObject>{ Self };
+        return new List<GameObject>{ Owner };
     }
 }

@@ -2,23 +2,25 @@
 using System.Collections;
 using System;
 
-public class SpeedBoost : Effect {
+public class SpeedBoost : BaseClass, Effect {
+
+    public MonoBehaviour Owner { get; set; }
 
     public float SpeedBoostValue;
     public float Duration;
 
-    public override void ApplyEffect(GameObject target)
+    public void ApplyEffect(GameObject target)
     {
-        Movement moveComponent = this.GetComponent<Movement>();
+        Movement moveComponent = target.GetComponent<Movement>();
         if (moveComponent == null) return;
 
         moveComponent.Speed += SpeedBoostValue;
-        this.StartCoroutine(ResetValue(moveComponent));
+        Owner.StartCoroutine(ResetValue(moveComponent));
     }
 
     IEnumerator ResetValue(Movement moveComponent)
     {
-        yield return this.StartCoroutine(this.WaitForDuration(Duration));
+        yield return Owner.StartCoroutine(this.WaitForDuration(Duration));
         moveComponent.Speed -= SpeedBoostValue;
     }
 }
