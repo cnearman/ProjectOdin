@@ -42,38 +42,38 @@ public class World : NetworkBehaviour
         }
 
         
-        for (int xi = 0; xi < Chunk.chunkSize; xi++)
+        /*for (int xi = 0; xi < Chunk.chunkSize; xi++)
         {
             for (int yi = 0; yi < Chunk.chunkSize; yi++)
             {
                 for (int zi = 0; zi < Chunk.chunkSize; zi++)
                 {
-                    if (yi > 7)
+
+                    if (type != 1)
                     {
-                        if (type == 1)
-                        {
-                            SetBlock(x + xi, y + yi, z + zi, new BlockGrass());
-                        }
-                        else
-                        {
-                            SetBlock(x + xi, y + yi, z + zi, new BlockAir());
-                        }
+                        SetBlock(x + xi, y + yi, z + zi, new BlockAir());
                     }
                     else
                     {
-                        if (type == 1)
+
+                        if (yi > 14)
                         {
-                            SetBlock(x + xi, y + yi, z + zi, new Block());
+                            SetBlock(x + xi, y + yi, z + zi, new BlockGreen());
+                        } else if(yi > 12)
+                        {
+                            SetBlock(x + xi, y + yi, z + zi, new BlockDarkBrown());
                         }
                         else
                         {
-                            SetBlock(x + xi, y + yi, z + zi, new BlockAir());
+                            SetBlock(x + xi, y + yi, z + zi, new BlockDarkGray());
                         }
                     }
                 }
             }
-        }
-        
+        }*/
+
+        //var terrainGen = new TerrainGen();
+        newChunk = tgen.ChunkGen(newChunk, this);
 
         newChunk.SetBlocksUnmodified();
     }
@@ -161,8 +161,11 @@ public class World : NetworkBehaviour
         }
     }
 
+    public TerrainGen tgen;
+
     void Start()
     {
+        tgen = new TerrainGen();
         /*for (int x = -8; x < 8; x++)
         {
             for (int y = 1; y < 3; y++)
@@ -193,6 +196,8 @@ public class World : NetworkBehaviour
                 }
             }
         }
+
+        tgen.MakeAllTrees();
 
         //now make the object
         GameObject[] voxelObs = GameObject.FindGameObjectsWithTag("VoxelMesh");
@@ -237,6 +242,30 @@ public class World : NetworkBehaviour
         {
             SetBlock(x, y, z, new BlockGrass());
         }
+        else if (block == 10)
+        {
+            SetBlock(x, y, z, new BlockBrown());
+        }
+        else if (block == 11)
+        {
+            SetBlock(x, y, z, new BlockDarkBrown());
+        }
+        else if (block == 12)
+        {
+            SetBlock(x, y, z, new BlockDarkGray());
+        }
+        else if (block == 13)
+        {
+            SetBlock(x, y, z, new BlockGray());
+        }
+        else if (block == 14)
+        {
+            SetBlock(x, y, z, new BlockGreen());
+        }
+        else if (block == 15)
+        {
+            SetBlock(x, y, z, new BlockLime());
+        }
     }
 
     [ClientRpc]
@@ -270,6 +299,29 @@ public class World : NetworkBehaviour
         else if (block == 2)
         {
             SetBlock(pos.x, pos.y, pos.z, new BlockGrass());
+        } else if(block == 10)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockBrown());
+        }
+        else if (block == 11)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockDarkBrown());
+        }
+        else if (block == 12)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockDarkGray());
+        }
+        else if (block == 13)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockGray());
+        }
+        else if (block == 14)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockGreen());
+        }
+        else if (block == 15)
+        {
+            SetBlock(pos.x, pos.y, pos.z, new BlockLime());
         }
     }
 

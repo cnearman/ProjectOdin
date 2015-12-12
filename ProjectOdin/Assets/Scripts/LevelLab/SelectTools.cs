@@ -67,12 +67,14 @@ public class SelectTools : MonoBehaviour {
             inBlockMenu = false;
             blockMenu.SetActive(false);
             user.GetComponent<BaseModifyBlocks>().inMenu = false;
-            
+            Cursor.lockState = CursorLockMode.Locked;
+
         } else
         {
             inBlockMenu = true;
             blockMenu.SetActive(true);
             user.GetComponent<BaseModifyBlocks>().inMenu = true;
+            Cursor.lockState = CursorLockMode.None;
 
         }
     }
@@ -84,6 +86,7 @@ public class SelectTools : MonoBehaviour {
             inObjectMenu = false;
             objectMenu.SetActive(false);
             user.GetComponent<BaseModifyBlocks>().inMenu = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
         }
         else
@@ -91,6 +94,7 @@ public class SelectTools : MonoBehaviour {
             inObjectMenu = true;
             objectMenu.SetActive(true);
             user.GetComponent<BaseModifyBlocks>().inMenu = true;
+            Cursor.lockState = CursorLockMode.None;
 
         }
     }

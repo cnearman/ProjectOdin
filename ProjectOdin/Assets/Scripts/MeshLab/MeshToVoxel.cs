@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using UnityEditor;
+//using UnityEditor;
 
 public class MeshToVoxel : MonoBehaviour {
     int cubeSide;
@@ -160,8 +160,8 @@ public class MeshToVoxel : MonoBehaviour {
         foreach (GameObject ph in placeHolders)
         {
 
-            AssetDatabase.CreateAsset( ph.GetComponent<MeshFilter>().mesh, "Assets/PastryStore/PieMeshes/" + nameOfOb + meshNum + ".asset");
-            AssetDatabase.SaveAssets();
+            //AssetDatabase.CreateAsset( ph.GetComponent<MeshFilter>().mesh, "Assets/PastryStore/PieMeshes/" + nameOfOb + meshNum + ".asset");
+            //AssetDatabase.SaveAssets();
 
             GameObject holder = (GameObject)Instantiate(place, ph.transform.position, Quaternion.identity);
             holder.GetComponent<MeshFilter>().mesh = ph.GetComponent<MeshFilter>().mesh;
@@ -174,7 +174,7 @@ public class MeshToVoxel : MonoBehaviour {
 
         
 
-        PrefabUtility.CreatePrefab("Assets/PastryStore/" + nameOfOb + ".prefab", nVoxelObj);
+        //PrefabUtility.CreatePrefab("Assets/PastryStore/" + nameOfOb + ".prefab", nVoxelObj);
     }
 
     public void AnalyzeMesh()

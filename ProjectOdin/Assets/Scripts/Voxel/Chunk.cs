@@ -53,6 +53,30 @@ public class Chunk : MonoBehaviour
                     {
                         blocks[x, y, z] = new BlockGrass();
                     }
+                    else if (blockInt[x, y, z] == 10)
+                    {
+                        blocks[x, y, z] =  new BlockBrown();
+                    }
+                    else if (blockInt[x, y, z] == 11)
+                    {
+                        blocks[x, y, z] =  new BlockDarkBrown();
+                    }
+                    else if (blockInt[x, y, z] == 12)
+                    {
+                        blocks[x, y, z] =  new BlockDarkGray();
+                    }
+                    else if (blockInt[x, y, z] == 13)
+                    {
+                        blocks[x, y, z] =  new BlockGray();
+                    }
+                    else if (blockInt[x, y, z] == 14)
+                    {
+                        blocks[x, y, z] =  new BlockGreen();
+                    }
+                    else if (blockInt[x, y, z] == 15)
+                    {
+                        blocks[x, y, z] =  new BlockLime();
+                    }
                 }
             }
         }
