@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using EventSystem;
+using System;
 
 [RequireComponent(typeof(BaseModifyBlocks))]
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(Jump))]
-public class PlayerController : NetworkBehaviour, EventListener
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Gun))]
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IHealable
 {
 
     public int PlayerNumber;
+    private Rigidbody RigidBodyComponent;
     private BaseModifyBlocks BlockModifier;
     private Movement Movement;
     private Jump Jump;
+    private Health Health;
+
+    private Gun Gun;
 
     private TriggerOnActivation[] internalAbilities;
 
@@ -25,6 +33,8 @@ public class PlayerController : NetworkBehaviour, EventListener
         this.Movement = this.gameObject.GetComponent<Movement>();
         this.Movement.CameraContainer = this.CameraContainer;
         this.Jump = this.gameObject.GetComponent<Jump>();
+        this.Health = this.gameObject.GetComponent<Health>();
+        this.Gun = this.gameObject.GetComponent<Gun>();
         int count = 0;
         internalAbilities = new TriggerOnActivation[Abilities.Length];
         foreach (GameObject ability in Abilities)
@@ -66,6 +76,8 @@ public class PlayerController : NetworkBehaviour, EventListener
                 {
                     //this.JumpAction();
                     this.CmdActivateAbility(0);
+                    this.Damage(10);
+                    Debug.Log("IsDead: " + IsDead);
                 }
                 else if (bE.ButtonAction == ButtonAction.Y)
                 {
@@ -74,10 +86,13 @@ public class PlayerController : NetworkBehaviour, EventListener
                 else if (bE.ButtonAction == ButtonAction.RightBumper)
                 {
                     this.DestroyBlockInRay();
+                    this.Damage(10);
+                    Debug.Log("IsDead: " + IsDead);
                 }
                 else if (bE.ButtonAction == ButtonAction.LeftBumper)
                 {
                     this.CreateBlockInRay();
+                    this.Gun.Fire(FirePosition, FireDirection);
                 }
             }
         }
@@ -125,7 +140,58 @@ public class PlayerController : NetworkBehaviour, EventListener
     [Command]
     private void CmdActivateAbility(int abilityNumber)
     {
-        internalAbilities[abilityNumber].Activate();
+        //internalAbilities[abilityNumber].Activate();
+    }
+
+    public void Damage(int damageValue)
+    {
+        Health.AddDamage(damageValue);
+    }
+
+    public void Heal(int healValue)
+    {
+        Health.RemoveDamage(healValue);
+    }
+
+    public bool IsDead
+    {
+        get
+        {
+            return Health.IsDead;
+        }
+    }
+
+    public Vector3 FirePosition
+    {
+        get
+        {
+            Vector3 displacement = FireDirection.eulerAngles;
+            Vector3 result = new Vector3
+            (
+                Mathf.Cos(displacement.x) * Mathf.Cos(displacement.y),
+                Mathf.Sin(displacement.x) * Mathf.Cos(displacement.y),
+                Mathf.Cos(displacement.y)
+            );
+
+            result.Scale(new Vector3(0.2f, 0.2f, 0.2f));
+            return transform.position + result;
+        }
+    }
+
+    public Quaternion FireDirection
+    {
+        get
+        {
+            return Quaternion.Euler(transform.GetChild(0).transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+        }
+    }
+
+    public Vector3 CurrentVelocity
+    {
+        get
+        {
+            return RigidBodyComponent.velocity;
+        }
     }
 }
 
