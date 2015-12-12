@@ -1,13 +1,50 @@
 ﻿using System;
 using UnityEngine;
 
-class Gun : IWeapon
+class Gun : BaseClass, IWeapon
 {
     public GameObject Projectile;
 
+    public GameObject Distribution;
+
+    public GameObject Owner;
+
+    private float RefireTime;
+    public float FireRate;
+
+    public bool CanFire
+    {
+        get
+        {
+            return RefireTime <= 0;
+        }
+    }
+
     public void Fire()
     {
-        throw new NotImplementedException();
+        Instantiate(Projectile, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+    }
+
+    public void Fire(Vector3 startingPosition, Quaternion direction)
+    {
+        if (CanFire)
+        {
+            Instantiate(Projectile, startingPosition, direction);
+            AddCoolDown(FireRate);
+        }
+    }
+
+    public void AddCoolDown(float time)
+    {
+        RefireTime += time;
+    }
+
+    void Update()
+    {
+        if (RefireTime > 0)
+        {
+            RefireTime -= Time.deltaTime;
+        }
     }
 }
 

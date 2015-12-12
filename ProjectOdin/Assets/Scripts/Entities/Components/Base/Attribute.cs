@@ -10,18 +10,24 @@ public class Attribute : BaseAttribute
 
     private bool Modified;
 
-    private float p_FinalValue;
+    private int p_FinalValue;
+    private int p_MaxValue;
 
-    public Attribute(int initialValue) : base(initialValue)
+    public void Initialize(int initialValue, int maxValue = int.MaxValue)
     {
         this.RawBonuses = new List<RawBonus>();
         this.FinalBonuses = new List<FinalBonus>();
         this.Modified = false;
         this.p_FinalValue = initialValue;
+        this.p_MaxValue = maxValue;
     }
 
     public void AddRawBonus(RawBonus bonus)
     {
+        if (FinalValue + bonus.BaseValue > p_MaxValue)
+        {
+            bonus.BaseValue = p_MaxValue - FinalValue;
+        }
         this.RawBonuses.Add(bonus);
         this.Modified = true;
     }
@@ -60,13 +66,13 @@ public class Attribute : BaseAttribute
         this.RemoveFinalBonus(bonus);
     }
 
-    public float FinalValue
+    public int FinalValue
     {
         get
         {
             if (this.Modified)
             {
-                p_FinalValue = BaseValue;
+                float temp_finalValue = BaseValue;
 
                 int rawBonusValue = 0;
                 float rawBonusMultiplier = 0f;
@@ -77,8 +83,8 @@ public class Attribute : BaseAttribute
                     rawBonusMultiplier += bonus.BaseMultiplier;
                 }
 
-                p_FinalValue += rawBonusValue;
-                p_FinalValue *= rawBonusMultiplier;
+                temp_finalValue += rawBonusValue;
+                temp_finalValue *= rawBonusMultiplier;
 
                 int finalBonusValue = 0;
                 float finalBonusMultiplier = 0f;
@@ -89,9 +95,10 @@ public class Attribute : BaseAttribute
                     finalBonusMultiplier += bonus.BaseMultiplier;
                 }
 
-                p_FinalValue += finalBonusValue;
-                p_FinalValue *= finalBonusMultiplier;
+                temp_finalValue += finalBonusValue;
+                temp_finalValue *= finalBonusMultiplier;
 
+                p_FinalValue = (int)temp_finalValue;
             }
 
             return p_FinalValue;

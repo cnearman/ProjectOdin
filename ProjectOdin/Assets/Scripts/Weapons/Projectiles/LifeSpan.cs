@@ -3,8 +3,8 @@ using UnityEngine;
 public class LifeSpan : BaseClass
 {
 	private double TimePassed;
-	
-	public double Duration { get; set; }
+
+    public double Duration;
 	
 	void Update()
 	{	

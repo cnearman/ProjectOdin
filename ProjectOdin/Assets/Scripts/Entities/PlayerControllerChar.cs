@@ -54,7 +54,7 @@ public class PlayerControllerChar : NetworkBehaviour, EventListener
                 }
                 else if (bE.ButtonAction == ButtonAction.Y)
                 {
-                    this.SpeedBoost.CmdActivate();
+                    //this.SpeedBoost.CmdActivate();
                 }
                 else if (bE.ButtonAction == ButtonAction.RightBumper)
                 {

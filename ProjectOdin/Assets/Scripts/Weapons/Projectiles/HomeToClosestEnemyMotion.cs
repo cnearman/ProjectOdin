@@ -12,7 +12,7 @@ public class HomeToClosestEnemyMotion : BaseClass, IProjectileMotion
                             //can see the target
     public string enemyTag;
 
-    public float Velocity { get; set; }
+    public float Velocity;
 
     void Update()
     {

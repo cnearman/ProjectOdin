@@ -2,11 +2,11 @@
 
 public class ForwardMotion : BaseClass, IProjectileMotion
 {
-    public float Velocity { get; set; }
+    public float Velocity;
 
-    void Update()
+    void Update() 
     {
-        transform.Translate(Vector2.up * 1.0f * Time.deltaTime * Velocity);
+        transform.Translate(Vector3.forward * 1.0f * Time.deltaTime * Velocity);
     }
 
 }
