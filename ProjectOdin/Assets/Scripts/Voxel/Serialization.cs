@@ -61,4 +61,23 @@ public static class Serialization
         return true;
     }
 
+    public static bool Load(VoxelProp voxp, string worldName, WorldPos wPos)
+    {
+        string saveFile = SaveLocation(worldName);
+        saveFile += FileName(wPos);
+
+        if (!File.Exists(saveFile))
+            return false;
+
+        IFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(saveFile, FileMode.Open);
+
+        voxp.blockInt = (int[,,])formatter.Deserialize(stream);
+        stream.Close();
+
+        voxp.IntToBlock();
+
+        return true;
+    }
+
 }

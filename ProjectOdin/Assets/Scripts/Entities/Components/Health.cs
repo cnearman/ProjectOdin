@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-class Health : Attribute
+class Health //: Attribute
 {
     public float StartingHealth { get; set; }
 

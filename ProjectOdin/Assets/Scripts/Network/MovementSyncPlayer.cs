@@ -32,6 +32,7 @@ public class MovementSyncPlayer : NetworkBehaviour
     [Command]
     void CmdChangePos(Vector3 pos, int na)
     {
+        //Debug.Log("Send");
         ChangePos(pos, na);
     }
 

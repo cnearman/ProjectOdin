@@ -13,8 +13,37 @@ public class World : NetworkBehaviour
 
     public GameObject[] voxObjects;
 
+    public GameObject voxPrefab;
+
     public void CreateChunk(int x, int y, int z, int type)
     {
+        //the coordinates of this chunk in the world
+        WorldPos worldPos = new WorldPos(x, y, z);
+
+        //Instantiate the chunk at the coordinates using the chunk prefab
+        GameObject newChunkObject = Instantiate(
+                        voxPrefab, new Vector3(worldPos.x, worldPos.y, worldPos.z),
+                        Quaternion.Euler(Vector3.zero)
+                    ) as GameObject;
+
+        //Get the object's chunk component
+        VoxelProp newChunk = newChunkObject.GetComponent<VoxelProp>();
+
+        //Assign its values
+        //newChunk.pos = worldPos;
+        //newChunk.world = this;
+
+        //Add it to the chunks dictionary with the position as the key
+        //chunks.Add(worldPos, newChunk);
+
+        bool loaded = Serialization.Load(newChunk, worldName, worldPos);
+        if (loaded)
+        {
+            newChunk.update = true;
+            return;
+        }
+
+        /*
         //the coordinates of this chunk in the world
         WorldPos worldPos = new WorldPos(x, y, z);
 
@@ -40,8 +69,8 @@ public class World : NetworkBehaviour
             newChunk.update = true;
             return;
         }
+        */
 
-        
         /*for (int xi = 0; xi < Chunk.chunkSize; xi++)
         {
             for (int yi = 0; yi < Chunk.chunkSize; yi++)
@@ -73,7 +102,7 @@ public class World : NetworkBehaviour
         }*/
 
         //var terrainGen = new TerrainGen();
-        newChunk = tgen.ChunkGen(newChunk, this);
+        //newChunk = tgen.ChunkGen(newChunk, this);
 
         newChunk.SetBlocksUnmodified();
     }
