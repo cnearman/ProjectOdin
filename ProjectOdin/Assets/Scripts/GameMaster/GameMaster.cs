@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class GameMaster : NetworkBehaviour {
+public class GameMaster : BaseClass {
     public int pointsToWin;
 
-    [SyncVar]
+    //[SyncVar]
     public int teamOnePoints;
 
-    [SyncVar]
+    //[SyncVar]
     public int teamTwoPoints;
     
 
@@ -60,7 +59,7 @@ public class GameMaster : NetworkBehaviour {
         }
     }
 
-    [ClientRpc]
+    //[ClientRpc]
     void RpcTime(float curTime)
     {
         currentTime = curTime;
@@ -128,7 +127,7 @@ public class GameMaster : NetworkBehaviour {
         currentTime = timeLimit;
 	}
 	
-    [ClientRpc]
+    //[ClientRpc]
     void RpcEndGameMessage(int winningTeam)
     {
         if(myTeam == winningTeam)
@@ -164,11 +163,11 @@ public class GameMaster : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         UpdateClientTime();
-	    if(isServer)
-        {
+	    //if(isServer)
+        //{
             UpdateServerTime();
             CheckForWin();
-        }
+        //}
         UpdateUI();
 	}
 }

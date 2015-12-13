@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CapPoint : NetworkBehaviour {
+public class CapPoint : BaseClass {
 
     public float timeToCap;
     public float currentTimeToCap;
@@ -18,7 +17,7 @@ public class CapPoint : NetworkBehaviour {
 
     GameObject gm;
     public GameObject flag;
-    [SyncVar]
+    //[SyncVar]
     float height;
 
     bool capping;
@@ -31,7 +30,7 @@ public class CapPoint : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (isServer)
+        if (true)//(isServer)
         {
             if (currentRate <= 0f)
             {
@@ -111,23 +110,23 @@ public class CapPoint : NetworkBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (isServer)
-        {
+        //if (isServer)
+        //{
             if (other.GetComponent<TeamTag>() != null)
             {
                 playersInHill.Add(other.gameObject);
             }
-        }
+        //}
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (isServer)
-        {
+        //if (isServer)
+        //{
             if (other.GetComponent<TeamTag>() != null)
             {
                 playersInHill.Remove(other.gameObject);
             }
-        }
+        //}
     }
 }

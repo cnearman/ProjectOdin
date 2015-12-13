@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
-public class MovementChar : NetworkBehaviour
+public class MovementChar : BaseClass
 {
     Rigidbody RigidBodyComponent;
     public GameObject CameraContainer;
@@ -12,7 +11,7 @@ public class MovementChar : NetworkBehaviour
     }
 
 
-    [SyncVar]
+    //[SyncVar]
     public float Speed;
 
     public float MotionInX { get; set; }
@@ -24,7 +23,7 @@ public class MovementChar : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isLocalPlayer) { return; }
+        ///if (!isLocalPlayer) { return; }
 
        
 

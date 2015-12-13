@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
 using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
-public class VoxelProp : NetworkBehaviour
+public class VoxelProp : BaseClass
 {
     public Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
     public int[,,] blockInt = new int[chunkSize, chunkSize, chunkSize];

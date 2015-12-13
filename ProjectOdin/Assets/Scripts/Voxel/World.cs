@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 
-public class World : NetworkBehaviour
+
+public class World : BaseClass
 {
 
     public string worldName;
@@ -297,7 +297,7 @@ public class World : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
+    //[ClientRpc]
     void RpcVoxelObject(WorldPos pos, int obj)
     {
 
@@ -307,14 +307,14 @@ public class World : NetworkBehaviour
 
     public void MakeObject(WorldPos pos, int obj)
     {
-        if (!isServer)
-            return;
+        //if (!isServer)
+        //    return;
 
         RpcVoxelObject(pos, obj);
     }
 
     //Sets the blocks on the client
-    [ClientRpc]
+    //[ClientRpc]
     void RpcSetBlock(WorldPos pos, int block)
     {
         if (block == 0)
@@ -357,8 +357,8 @@ public class World : NetworkBehaviour
     //The server sends the calls to the client
     public void SetBlock(WorldPos pos, int block)
     {
-        if (!isServer)//only the server needs to do this
-            return;
+       // if (!isServer)//only the server needs to do this
+       //     return;
 
         RpcSetBlock(pos, block);
     }

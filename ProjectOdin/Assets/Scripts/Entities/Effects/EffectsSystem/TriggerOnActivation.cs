@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEngine.Networking;
 
 [RequireComponent(typeof(Targeter))]
 [RequireComponent(typeof(Effect))]
 
-public class TriggerOnActivation : BaseNetworkClass {
+public class TriggerOnActivation : BaseClass {
 
     public GameObject Owner;
 

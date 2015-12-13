@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 using EventSystem;
 
-[RequireComponent(typeof(BaseModifyBlocks))]
+//[RequireComponent(typeof(BaseModifyBlocks))]
 //[RequireComponent(typeof(Movement))]
 //[RequireComponent(typeof(Jump))]
-public class PlayerControllerChar : NetworkBehaviour, EventListener
+public class PlayerControllerChar : BaseClass, EventListener
 {
 
     public int PlayerNumber;
@@ -30,10 +29,10 @@ public class PlayerControllerChar : NetworkBehaviour, EventListener
 
     public void EventReceived(BaseEvent e)
     {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
+        //if (!isLocalPlayer)
+        //{
+        //    return;
+        //}
 
         if (e.Type == TypeOfEvent.ButtonEvent)
         {
