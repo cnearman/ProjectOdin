@@ -4,7 +4,5 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Entities
-{
     class SniperController : PlayerController { }
-}
+

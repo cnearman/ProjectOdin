@@ -1,23 +1,20 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 using EventSystem;
 using System.Collections.Generic;
 
 //[RequireComponent(typeof(BaseModifyBlocks))]
-[RequireComponent(typeof(Movement))]
-[RequireComponent(typeof(Jump))]
+[RequireComponent(typeof(MovementPhoton))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(IWeapon))]
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IHealable
+public class PlayerController : BaseClass, EventListener, IDamageable, IHealable
 {
 
     public int PlayerNumber;
-    private Rigidbody RigidBodyComponent;
     //private BaseModifyBlocks BlockModifier;
-    private Movement Movement;
-    private Jump Jump;
+    private MovementPhoton Movement;
     private Health Health;
+
+    private CharacterController Controller;
 
     private IWeapon PrimaryGun;
     private IWeapon SecondaryGun;
@@ -28,12 +25,17 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
 
     public GameObject CameraContainer;
 
+    protected PhotonView m_PhotonView;
+    public GameObject cam;
+
+    public MatchControl mc;
+
     void Awake()
     {
         //this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
-        this.Movement = this.gameObject.GetComponent<Movement>();
+        this.Controller = GetComponent<CharacterController>();
+        this.Movement = this.gameObject.GetComponent<MovementPhoton>();
         this.Movement.CameraContainer = this.CameraContainer;
-        this.Jump = this.gameObject.GetComponent<Jump>();
         this.Health = this.gameObject.GetComponent<Health>();
         IEnumerable<IWeapon> Guns = this.gameObject.GetComponents<IWeapon>();
         foreach(IWeapon currentGun in Guns)
@@ -61,13 +63,24 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
 
     void Start()
     {
+        mc = GameObject.Find("MatchControl").GetComponent<MatchControl>();
+
+        m_PhotonView = GetComponent<PhotonView>();
+        if (m_PhotonView.isMine)
+        {
+            cam.GetComponent<Camera>().enabled = true;
+            GetComponent<TeamTag>().teamNumber = mc.RequestTeam();
+            GetComponent<TeamTag>().OnTeamChange();
+            mc.RequestSpawn(gameObject);
+        }
+
         EventManager.RegisterListener(this, TypeOfEvent.ButtonEvent);
         EventManager.RegisterListener(this, TypeOfEvent.AxisEvent);
     }
 
     public void EventReceived(BaseEvent e)
     {
-        if (!isLocalPlayer)
+        if (m_PhotonView.isMine == false && PhotonNetwork.connected == true)
         {
             return;
         }
@@ -87,10 +100,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
                 }
                 else if (bE.ButtonAction == ButtonAction.X)
                 {
-                    //this.JumpAction();
-                    this.CmdActivateAbility(0);
-                    this.Damage(10);
-                    Debug.Log("IsDead: " + IsDead);
+                    this.JumpAction();
                 }
                 else if (bE.ButtonAction == ButtonAction.Y)
                 {
@@ -138,7 +148,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
 
     private void JumpAction()
     {
-        Jump.PerformJump();
+        Movement.PerformJump();
     }
 
     /*
@@ -152,8 +162,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
         BlockModifier.CreateDefaultBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
     }
     */
-
-    [Command]
+    
     private void CmdActivateAbility(int abilityNumber)
     {
         //internalAbilities[abilityNumber].Activate();
@@ -206,7 +215,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
     {
         get
         {
-            return RigidBodyComponent.velocity;
+            return Controller.velocity;
         }
     }
 }
