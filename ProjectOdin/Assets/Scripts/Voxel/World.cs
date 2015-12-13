@@ -29,6 +29,8 @@ public class World : BaseClass
         //Get the object's chunk component
         VoxelProp newChunk = newChunkObject.GetComponent<VoxelProp>();
 
+        newChunk.MakeArrays(16, 16, 16);
+
         //Assign its values
         //newChunk.pos = worldPos;
         //newChunk.world = this;

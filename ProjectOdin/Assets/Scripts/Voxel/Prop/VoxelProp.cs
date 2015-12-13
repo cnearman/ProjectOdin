@@ -8,10 +8,15 @@ using System;
 
 public class VoxelProp : BaseClass
 {
-    public Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
-    public int[,,] blockInt = new int[chunkSize, chunkSize, chunkSize];
+    public Block[,,] blocks;
+    public int[,,] blockInt;
+    
 
-    public static int chunkSize = 16;
+
+    public int chunkSizeX;
+    public int chunkSizeY;
+    public int chunkSizeZ;
+
     public bool update = false;
 
     MeshFilter filter;
@@ -24,13 +29,23 @@ public class VoxelProp : BaseClass
     public string unique;
 
 
+    public void MakeArrays(int x, int y, int z)
+    {
+        chunkSizeX = x;
+        chunkSizeY = y;
+        chunkSizeZ = z;
+
+        blocks = new Block[chunkSizeX, chunkSizeY, chunkSizeZ];
+        blockInt = new int[chunkSizeX, chunkSizeY, chunkSizeZ];
+    }
+
     public void BlockToInt()
     {
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSizeX; x++)
         {
-            for (int y = 0; y < chunkSize; y++)
+            for (int y = 0; y < chunkSizeY; y++)
             {
-                for (int z = 0; z < chunkSize; z++)
+                for (int z = 0; z < chunkSizeZ; z++)
                 {
                     blockInt[x, y, z] = blocks[x, y, z].blockInt;
                 }
@@ -40,11 +55,11 @@ public class VoxelProp : BaseClass
 
     public void IntToBlock()
     {
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSizeX; x++)
         {
-            for (int y = 0; y < chunkSize; y++)
+            for (int y = 0; y < chunkSizeY; y++)
             {
-                for (int z = 0; z < chunkSize; z++)
+                for (int z = 0; z < chunkSizeZ; z++)
                 {
                     if (blockInt[x, y, z] == 0)
                     {
@@ -115,11 +130,11 @@ public class VoxelProp : BaseClass
         //GameObject.Find("PropDestruction").GetComponent<PropDestruction>().SphereDestroy(damage.transform.position, damage.transform.localScale.y, gameObject.name);
         //Debug.Log("boomSphere");
         //this is the worst, completely unoptimised i just want it to fucking work version
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSizeX; x++)
         {
-            for (int y = 0; y < chunkSize; y++)
+            for (int y = 0; y < chunkSizeY; y++)
             {
-                for (int z = 0; z < chunkSize; z++)
+                for (int z = 0; z < chunkSizeZ; z++)
                 {
                     Vector3 posCheck = x * transform.right + y * transform.up + z * transform.forward + transform.position;
 
@@ -146,11 +161,11 @@ public class VoxelProp : BaseClass
 
     void MakeTree()
     {
-        for (int xa = 0; xa < chunkSize; xa++)
+        for (int xa = 0; xa < chunkSizeX; xa++)
         {
-            for (int ya = 0; ya < chunkSize; ya++)
+            for (int ya = 0; ya < chunkSizeY; ya++)
             {
-                for (int za = 0; za < chunkSize; za++)
+                for (int za = 0; za < chunkSizeZ; za++)
                 {
                     SetBlock(xa, ya, za, new BlockAir());
                 }
@@ -205,15 +220,15 @@ public class VoxelProp : BaseClass
 
     public Block GetBlock(int x, int y, int z)
     {
-        if (InRange(x) && InRange(y) && InRange(z))
+        if (InRange(x,y, z))
             return blocks[x, y, z];
         return new BlockAir();
     }
 
     //new function
-    public static bool InRange(int index)
+    public bool InRange(int x, int y, int z)
     {
-        if (index < 0 || index >= chunkSize)
+        if (x < 0 || x >= chunkSizeX || y < 0 || y >= chunkSizeY || z < 0 || z >= chunkSizeZ)
             return false;
 
         return true;
@@ -221,7 +236,7 @@ public class VoxelProp : BaseClass
 
     public void SetBlock(int x, int y, int z, Block block)
     {
-        if (InRange(x) && InRange(y) && InRange(z))
+        if (InRange(x,y, z))
         {
             blocks[x, y, z] = block;
         }
@@ -238,11 +253,11 @@ public class VoxelProp : BaseClass
 
         MeshData meshData = new MeshData();
 
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSizeX; x++)
         {
-            for (int y = 0; y < chunkSize; y++)
+            for (int y = 0; y < chunkSizeY; y++)
             {
-                for (int z = 0; z < chunkSize; z++)
+                for (int z = 0; z < chunkSizeZ; z++)
                 {
                     if (blocks[x, y, z].air)
                     {
@@ -267,7 +282,7 @@ public class VoxelProp : BaseClass
 
 
 
-        if (y == chunkSize - 1 || !GetBlock(x, y + 1, z).IsSolid(Direction.Down))
+        if (y == chunkSizeY - 1 || !GetBlock(x, y + 1, z).IsSolid(Direction.Down))
         {
             meshData = GetBlock(x, y, z).FaceDataUp(x, y, z, meshData);
         }
@@ -277,7 +292,7 @@ public class VoxelProp : BaseClass
             meshData = GetBlock(x, y, z).FaceDataDown(x, y, z, meshData);
         }
 
-        if (z == chunkSize - 1 || !GetBlock(x, y, z + 1).IsSolid(Direction.South))
+        if (z == chunkSizeZ - 1 || !GetBlock(x, y, z + 1).IsSolid(Direction.South))
         {
             meshData = GetBlock(x, y, z).FaceDataNorth(x, y, z, meshData);
         }
@@ -287,7 +302,7 @@ public class VoxelProp : BaseClass
             meshData = GetBlock(x, y, z).FaceDataSouth(x, y, z, meshData);
         }
 
-        if (x == chunkSize - 1 || !GetBlock(x + 1, y, z).IsSolid(Direction.Left))
+        if (x == chunkSizeX - 1 || !GetBlock(x + 1, y, z).IsSolid(Direction.Left))
         {
             meshData = GetBlock(x, y, z).FaceDataLeft(x, y, z, meshData);
         }
@@ -415,11 +430,11 @@ public class VoxelProp : BaseClass
         Debug.Log(dPos);
 
 
-        for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSizeX; x++)
         {
-            for (int y = 0; y < chunkSize; y++)
+            for (int y = 0; y < chunkSizeY; y++)
             {
-                for (int z = 0; z < chunkSize; z++)
+                for (int z = 0; z < chunkSizeZ; z++)
                 {
                     //first we get the world position of the voxel
                     Vector3 posCheck = x * transform.right + y * transform.up + z * transform.forward + transform.position;
