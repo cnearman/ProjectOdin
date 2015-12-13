@@ -6,7 +6,7 @@ using System;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
-public class VoxelProp : BaseClass
+public class VoxelProp : BaseClass, IDamageable
 {
     public Block[,,] blocks;
     public int[,,] blockInt;
@@ -529,5 +529,11 @@ public class VoxelProp : BaseClass
         }
 
         update = true;
+    }
+
+    public void Damage(int damageValue)
+    {
+        //Find location of collision
+        //destroy block at collision
     }
 }

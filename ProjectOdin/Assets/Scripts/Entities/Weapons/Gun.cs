@@ -11,7 +11,7 @@ public class Gun : BaseClass, IWeapon
 {
     public GameObject Distribution;
 
-    public GameObject Owner;
+    public GameObject Owner { get; set; }
 
     private float RefireTime;
     public float FireRate;
@@ -37,14 +37,18 @@ public class Gun : BaseClass, IWeapon
 
     public void Fire()
     {
-        PhotonNetwork.Instantiate(Projectile, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), 0);
+        GameObject newProjectile = PhotonNetwork.Instantiate(Projectile, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), 0);
+        TriggerOnCollision trigger = newProjectile.GetComponent<TriggerOnCollision>();
+        trigger.Owner = this.Owner;
     }
 
     public void Fire(Vector3 startingPosition, Quaternion direction)
     {
         if (CanFire)
         {
-            PhotonNetwork.Instantiate(Projectile, startingPosition, direction, 0);
+            GameObject newProjectile = PhotonNetwork.Instantiate(Projectile, startingPosition, direction, 0);
+            TriggerOnCollision trigger = newProjectile.GetComponent<TriggerOnCollision>();
+            trigger.Owner = this.Owner;
             AddCoolDown(FireRate);
         }
     }

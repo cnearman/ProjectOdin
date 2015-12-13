@@ -40,6 +40,7 @@ public class PlayerController : BaseClass, EventListener, IDamageable, IHealable
         IEnumerable<IWeapon> Guns = this.gameObject.GetComponents<IWeapon>();
         foreach(IWeapon currentGun in Guns)
         {
+            currentGun.Owner = gameObject;
             if (currentGun.GunPriority == GunPriority.Primary)
             {
                 this.PrimaryGun = currentGun;
@@ -165,7 +166,7 @@ public class PlayerController : BaseClass, EventListener, IDamageable, IHealable
     
     private void CmdActivateAbility(int abilityNumber)
     {
-        //internalAbilities[abilityNumber].Activate();
+        internalAbilities[abilityNumber].Activate();
     }
 
     public void Damage(int damageValue)
@@ -190,16 +191,7 @@ public class PlayerController : BaseClass, EventListener, IDamageable, IHealable
     {
         get
         {
-            Vector3 displacement = FireDirection.eulerAngles;
-            Vector3 result = new Vector3
-            (
-                Mathf.Cos(displacement.x) * Mathf.Cos(displacement.y),
-                Mathf.Sin(displacement.x) * Mathf.Cos(displacement.y),
-                Mathf.Cos(displacement.y)
-            );
-
-            result.Scale(new Vector3(0.2f, 0.2f, 0.2f));
-            return transform.position + result;
+            return CameraContainer.transform.position + CameraContainer.transform.forward * 1;
         }
     }
 

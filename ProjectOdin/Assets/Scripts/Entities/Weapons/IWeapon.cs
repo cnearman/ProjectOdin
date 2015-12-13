@@ -3,6 +3,8 @@ using System.Collections;
 
 public interface IWeapon {
 
+    GameObject Owner { get; set; }
+
     GunPriority GunPriority { get;}
 
     void Fire();

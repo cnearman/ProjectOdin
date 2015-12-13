@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class TriggerOnCollision : BaseClass {
 
+    public GameObject Owner { get; set; }
+
     public IEnumerable<Effect> Effects;
 
     void Awake()
@@ -15,7 +17,7 @@ public class TriggerOnCollision : BaseClass {
     void OnTriggerEnter(Collider other)
     {
         GameObject target = other.gameObject;
-        if (target == null) return;
+        if (target == null || target == Owner) return;
 
         foreach(Effect currentEffect in Effects)
         {

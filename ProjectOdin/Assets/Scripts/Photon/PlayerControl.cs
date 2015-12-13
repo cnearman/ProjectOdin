@@ -13,7 +13,7 @@ public class PlayerControl : MonoBehaviour {
     {
         Vector3 position = new Vector3(33.5f, 1.5f, 20.5f);
 
-        GameObject newPlayerObject = PhotonNetwork.Instantiate("PlayerPhoton", new Vector3(0f, 40f, 0f), Quaternion.identity, 0);
+        GameObject newPlayerObject = PhotonNetwork.Instantiate("SniperPhoton", new Vector3(0f, 40f, 0f), Quaternion.identity, 0);
 
         //Camera.Target = newPlayerObject.transform;
     }
