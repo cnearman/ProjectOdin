@@ -12,9 +12,9 @@ public class TriggerOnCollision : BaseClass {
         Effects = GetComponents<Effect>();
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        GameObject target = collision.gameObject;
+        GameObject target = other.gameObject;
         if (target == null) return;
 
         foreach(Effect currentEffect in Effects)

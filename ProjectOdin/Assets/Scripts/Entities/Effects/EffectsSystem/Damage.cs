@@ -15,9 +15,4 @@ public class Damage : BaseClass, Effect {
 
         damageTarget.Damage(DamageValue);
     }
-
-    void Effect.ApplyEffect(GameObject target)
-    {
-        throw new NotImplementedException();
-    }
 }
