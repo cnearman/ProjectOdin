@@ -36,7 +36,6 @@ public class PlayerControllerChar : BaseClass, EventListener
             GetComponent<TeamTag>().teamNumber = mc.RequestTeam();
             GetComponent<TeamTag>().OnTeamChange();
             mc.RequestSpawn(gameObject);
-
         }
 
         EventManager.RegisterListener(this, TypeOfEvent.ButtonEvent);
