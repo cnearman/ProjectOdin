@@ -1,7 +1,21 @@
+using System;
 using UnityEngine;
 
-public class DestroySelf : BaseClass
+public class DestroySelf : BaseClass, Effect
 {
+    public MonoBehaviour Owner
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+
+        set
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public void ApplyEffect(GameObject target)
     {
         Destroy(gameObject);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TriggerOnCollision : BaseClass {
 
-    private IEnumerable<Effect> Effects;
+    public IEnumerable<Effect> Effects;
 
     void Awake()
     {
