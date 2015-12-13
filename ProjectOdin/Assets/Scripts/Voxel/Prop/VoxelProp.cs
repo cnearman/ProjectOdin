@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
+using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
-public class VoxelProp : MonoBehaviour
+public class VoxelProp : NetworkBehaviour
 {
     public Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
     public int[,,] blockInt = new int[chunkSize, chunkSize, chunkSize];
@@ -19,6 +21,8 @@ public class VoxelProp : MonoBehaviour
 
 
     public bool rendered;
+
+    public string unique;
 
 
     public void BlockToInt()
@@ -88,6 +92,15 @@ public class VoxelProp : MonoBehaviour
     void Start()
     {
 
+        //gameObject.name = "Prop " + GetComponent<NetworkIdentity>().assetId.ToString();
+        /*if (!isServer)
+        {
+            unique =  Guid.NewGuid().ToString();
+            gameObject.name = unique;
+        }*/
+
+        gameObject.name = "Prop " + transform.position.ToString();
+
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
         //MakeTree();
@@ -100,9 +113,10 @@ public class VoxelProp : MonoBehaviour
     //only works for true spheres, none of that oval bs
     public void TakeSphereDamage(GameObject damage)
     {
-        Debug.Log("boomSphere");
+        GameObject.Find("PropDestruction").GetComponent<PropDestruction>().SphereDestroy(damage.transform.position, damage.transform.localScale.y, gameObject.name);
+        //Debug.Log("boomSphere");
         //this is the worst, completely unoptimised i just want it to fucking work version
-        for (int x = 0; x < chunkSize; x++)
+        /*for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
@@ -121,12 +135,40 @@ public class VoxelProp : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
 
         update = true;
 
     }
 
+    
+
+    public void TakeSphereDamageNet(Vector3 spherePos, float sphereScale)
+    {
+
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int y = 0; y < chunkSize; y++)
+            {
+                for (int z = 0; z < chunkSize; z++)
+                {
+                    Vector3 posCheck = x * transform.right + y * transform.up + z * transform.forward + transform.position;
+
+                    Vector3 pointToCenter = spherePos - posCheck;
+
+
+
+                    if (pointToCenter.magnitude < sphereScale / 2f)
+                    {
+                        //Debug.Log(pointToCenter.magnitude);
+                        SetBlock(x, y, z, new BlockAir());
+                    }
+                }
+            }
+        }
+
+        update = true;
+    }
 
     void MakeTree()
     {
@@ -170,6 +212,8 @@ public class VoxelProp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (update)
         {
             update = false;

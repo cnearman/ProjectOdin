@@ -77,7 +77,7 @@ public class GameMaster : NetworkBehaviour {
         {
             RpcTime(currentTime);
             currentTimeCheck = timeCheck;
-            Debug.Log("synch time");
+            //Debug.Log("synch time");
         } else
         {
             currentTimeCheck -= Time.deltaTime;

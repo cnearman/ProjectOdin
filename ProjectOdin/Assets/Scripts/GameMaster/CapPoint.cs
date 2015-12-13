@@ -18,6 +18,7 @@ public class CapPoint : NetworkBehaviour {
 
     GameObject gm;
     public GameObject flag;
+    [SyncVar]
     float height;
 
     bool capping;
@@ -99,6 +100,11 @@ public class CapPoint : NetworkBehaviour {
 
             flag.transform.localPosition = new Vector3(flag.transform.localPosition.x, height, flag.transform.localPosition.z);
 
+        } else
+        {
+
+
+            flag.transform.localPosition = new Vector3(flag.transform.localPosition.x, height, flag.transform.localPosition.z);
         }
 
     }

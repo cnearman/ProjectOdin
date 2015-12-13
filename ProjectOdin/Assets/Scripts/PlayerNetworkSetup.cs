@@ -19,6 +19,11 @@ public class PlayerNetworkSetup : NetworkBehaviour {
                 GameObject.Find("LevelTools").GetComponent<SelectTools>().user = gameObject;
             }
 
+            if(GameObject.Find("PropDestruction") != null)
+            {
+                GameObject.Find("PropDestruction").GetComponent<PropDestruction>().user = gameObject;
+            }
+
         }
 
         if(isServer)
