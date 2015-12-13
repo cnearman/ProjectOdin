@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 public class TriggerOnCollision : BaseClass {
 
-    private IEnumerable<Effect> Effects;
+    public IEnumerable<Effect> Effects;
 
     void Awake()
     {
         Effects = GetComponents<Effect>();
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        GameObject target = collision.gameObject;
+        GameObject target = other.gameObject;
         if (target == null) return;
 
         foreach(Effect currentEffect in Effects)
