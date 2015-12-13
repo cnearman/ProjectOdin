@@ -16,8 +16,29 @@ public class PlayerControllerChar : BaseClass, EventListener
 
     public GameObject CameraContainer;
 
+    protected PhotonView m_PhotonView;
+    public GameObject cam;
+    public PlayerCreateExample pce;
+    public PlayerDestroyExample pde;
+
+    public MatchControl mc;
+
     void Start()
     {
+        mc = GameObject.Find("MatchControl").GetComponent<MatchControl>();
+
+        m_PhotonView = GetComponent<PhotonView>();
+        if(m_PhotonView.isMine)
+        {
+            cam.GetComponent<Camera>().enabled = true;
+            pce.enabled = true;
+            pde.enabled = true;
+            GetComponent<TeamTag>().teamNumber = mc.RequestTeam();
+            GetComponent<TeamTag>().OnTeamChange();
+            mc.RequestSpawn(gameObject);
+
+        }
+
         EventManager.RegisterListener(this, TypeOfEvent.ButtonEvent);
         EventManager.RegisterListener(this, TypeOfEvent.AxisEvent);
         this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
@@ -101,12 +122,12 @@ public class PlayerControllerChar : BaseClass, EventListener
 
     private void DestroyBlockInRay()
     {
-        BlockModifier.DestroyBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
+        //BlockModifier.DestroyBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
     }
 
     private void CreateBlockInRay()
     {
-        BlockModifier.CreateDefaultBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
+        //BlockModifier.CreateDefaultBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
     }
 
     Vector3 moveDirection;
@@ -116,6 +137,12 @@ public class PlayerControllerChar : BaseClass, EventListener
 
     void Update()
     {
+
+
+        if (m_PhotonView.isMine == false && PhotonNetwork.connected == true)
+        {
+            return;
+        }
 
         CharacterController controller = GetComponent<CharacterController>();
         if (controller.isGrounded)

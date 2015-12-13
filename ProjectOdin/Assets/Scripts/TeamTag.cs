@@ -4,11 +4,23 @@ using System.Collections;
 public class TeamTag : BaseClass {
     //[SyncVar (hook = "OnTeamChange")]
     public int teamNumber;
+    protected PhotonView m_PhotonView;
 
-    void OnTeamChange(int nTeam)
+    void Start()
     {
-       
-            GameObject.Find("GameMaster").GetComponent<GameMaster>().myTeam = nTeam;
-        
+        m_PhotonView = GetComponent<PhotonView>();
+    }
+
+    public void OnTeamChange()
+    {
+            GameObject.Find("GameMaster").GetComponent<GameMaster>().myTeam = teamNumber;
+
+            GetComponent<PhotonView>().RPC("UpdateTeam", PhotonTargets.AllBuffered, teamNumber);
+    }
+
+    [PunRPC]
+    public void UpdateTeam(int team)
+    {
+        teamNumber = team;
     }
 }

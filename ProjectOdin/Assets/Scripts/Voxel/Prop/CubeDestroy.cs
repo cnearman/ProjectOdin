@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 public class CubeDestroy : MonoBehaviour {
     List<GameObject> hits = new List<GameObject>();
+    public float life = 0.2f;
     
 
 	// Use this for initialization
 	void Start () {
-	
+        Destroy(gameObject, life);
 	}
 	
 	// Update is called once per frame

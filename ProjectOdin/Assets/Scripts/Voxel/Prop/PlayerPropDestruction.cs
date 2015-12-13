@@ -7,7 +7,7 @@ public class PlayerPropDestruction : NetworkBehaviour {
     [ClientRpc]
     void RpcSphereDamage(Vector3 spherePos, float sphereScale, string prop)
     {
-        GameObject.Find(prop).GetComponent<VoxelProp>().TakeSphereDamageNet(spherePos, sphereScale);
+        //GameObject.Find(prop).GetComponent<VoxelProp>().TakeSphereDamageNet(spherePos, sphereScale);
     }
 
 

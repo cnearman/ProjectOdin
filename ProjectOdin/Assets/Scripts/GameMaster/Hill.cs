@@ -41,7 +41,7 @@ public class Hill : NetworkBehaviour {
                 if(teamA.Length == 1)
                 {
                     //increase the score of this team.
-                    gm.GetComponent<GameMaster>().IncreaseScore(teamA[0], 1);
+                    //gm.GetComponent<GameMaster>().IncreaseScore(teamA[0], 1);
                 }
 
                 currentRate = 1f / pointGenRate;

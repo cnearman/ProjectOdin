@@ -10,79 +10,78 @@ public class CapPoint : BaseClass {
     public float decayRate;
     public int teamOwner;
 
-    public float updateRate;
-    public float currentRate;
-
     List<GameObject> playersInHill = new List<GameObject>();
 
-    GameObject gm;
     public GameObject flag;
     //[SyncVar]
     float height;
 
     bool capping;
 
-	// Use this for initialization
-	void Start () {
-        gm = GameObject.Find("GameMaster");
+    MatchControl mc;
+
+    protected PhotonView m_PhotonView;
+
+    void Start()
+    {
+        m_PhotonView = GetComponent<PhotonView>();
+        mc = GameObject.Find("MatchControl").GetComponent<MatchControl>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (true)//(isServer)
+    void Update() {
+
+        if (m_PhotonView.isMine == false && PhotonNetwork.connected == true)
         {
-            if (currentRate <= 0f)
+
+            flag.transform.localPosition = new Vector3(flag.transform.localPosition.x, height, flag.transform.localPosition.z);
+            return;
+        }
+
+        //Remove destroyed players
+        playersInHill.RemoveAll(delegate (GameObject o) { return o == null; });
+
+            //Create a hash set and add the team numbers of all the players to it
+            HashSet<int> teamNums = new HashSet<int>();
+
+            foreach (GameObject p in playersInHill)
             {
-                //Remove destroyed players
-                playersInHill.RemoveAll(delegate (GameObject o) { return o == null; });
+                teamNums.Add(p.GetComponent<TeamTag>().teamNumber);
+            }
 
-                //Create a hash set and add the team numbers of all the players to it
-                HashSet<int> teamNums = new HashSet<int>();
+            int[] teamA = teamNums.ToArray();
 
-                foreach (GameObject p in playersInHill)
+            //if the length is 1, that means theres only one team in the hill
+            if (teamA.Length == 1)
+            {
+                //if its the team that need to cap, start lowering the flag
+                if(teamA[0] != teamOwner)
                 {
-                    teamNums.Add(p.GetComponent<TeamTag>().teamNumber);
-                }
-
-                int[] teamA = teamNums.ToArray();
-
-                //if the length is 1, that means theres only one team in the hill
-                if (teamA.Length == 1)
-                {
-                    //if its the team that need to cap, start lowering the flag
-                    if(teamA[0] != teamOwner)
-                    {
-                        capping = true;
-                    } else
-                    {
-                        //put the flag back
-                        capping = false;
-                    }
+                    capping = true;
                 } else
                 {
                     //put the flag back
                     capping = false;
                 }
+            } else
+            {
+                //put the flag back
+                capping = false;
+            }
 
                 
 
-                if(currentTimeToCap >= timeToCap && teamA.Length == 1 && teamA[0] != teamOwner)
-                {
-                    gm.GetComponent<GameMaster>().IncreaseScore(teamA[0], 1);
-                }
-
-                if(gm.GetComponent<GameMaster>().currentTime <= -1f)
-                {
-                    gm.GetComponent<GameMaster>().IncreaseScore(teamOwner, 1);
-                }
-
-                currentRate = updateRate;
-            }
-            else
+            if(currentTimeToCap >= timeToCap && teamA.Length == 1 && teamA[0] != teamOwner)
             {
-                currentRate -= Time.deltaTime;
+                mc.IncreaseScore(teamA[0], 1);
             }
+
+            if(mc.currentTime <= -1f)
+            {
+                mc.IncreaseScore(teamOwner, 1);
+            }
+
+            
 
             if(capping)
             {
@@ -99,13 +98,18 @@ public class CapPoint : BaseClass {
 
             flag.transform.localPosition = new Vector3(flag.transform.localPosition.x, height, flag.transform.localPosition.z);
 
-        } else
+    }
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
         {
-
-
-            flag.transform.localPosition = new Vector3(flag.transform.localPosition.x, height, flag.transform.localPosition.z);
+            stream.SendNext(height);
         }
-
+        else
+        {
+            height = (float)stream.ReceiveNext();
+        }
     }
 
     void OnTriggerEnter(Collider other)

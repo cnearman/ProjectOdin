@@ -10,13 +10,7 @@ public class GameMaster : BaseClass {
 
     //[SyncVar]
     public int teamTwoPoints;
-    
-
-    public float timeLimit;
-    public float currentTime;
-
-    public float timeCheck;
-    public float currentTimeCheck;
+   
 
     public Text uiMyTeam;
     public Text uiTime;
@@ -33,6 +27,13 @@ public class GameMaster : BaseClass {
     public int team2Size;
 
     public int myTeam;
+
+    MatchControl mc;
+
+    void Start()
+    {
+        mc = GameObject.Find("MatchControl").GetComponent<MatchControl>();
+    }
 
     public int RequestTeam()
     {
@@ -59,43 +60,14 @@ public class GameMaster : BaseClass {
         }
     }
 
-    //[ClientRpc]
-    void RpcTime(float curTime)
-    {
-        currentTime = curTime;
-    }
+   
 
-    void UpdateClientTime()
-    {
-        currentTime -= Time.deltaTime;
-    }
-
-    void UpdateServerTime()
-    {
-        if (currentTimeCheck <= 0f)
-        {
-            RpcTime(currentTime);
-            currentTimeCheck = timeCheck;
-            //Debug.Log("synch time");
-        } else
-        {
-            currentTimeCheck -= Time.deltaTime;
-        }
-    }
-
-    public void IncreaseScore(int team, int amount)
-    {
-        if(team == 1)
-        {
-            teamOnePoints += amount;
-        } else if(team == 2)
-        {
-            teamTwoPoints += amount;
-        }
-    }
+    
 
     void UpdateUI()
     {
+
+        float currentTime = mc.currentTime;
         int tempMin = (int)(currentTime / 60f);
         int tempSec = (int)(currentTime % 60f);
 
@@ -122,11 +94,7 @@ public class GameMaster : BaseClass {
 
     }
 
-    // Use this for initialization
-    void Start () {
-        currentTime = timeLimit;
-	}
-	
+   
     //[ClientRpc]
     void RpcEndGameMessage(int winningTeam)
     {
@@ -147,7 +115,7 @@ public class GameMaster : BaseClass {
         } else if(teamTwoPoints >= pointsToWin)
         {
             RpcEndGameMessage(2);
-        } else if(currentTime <= 0f)
+        } else if(false)
         {
             if(teamOnePoints > teamTwoPoints)
             {
@@ -162,11 +130,12 @@ public class GameMaster : BaseClass {
 
 	// Update is called once per frame
 	void Update () {
-        UpdateClientTime();
-	    //if(isServer)
+        teamOnePoints = mc.team1Points;
+        teamTwoPoints = mc.team2Points;
+        //if(isServer)
         //{
-            UpdateServerTime();
-            CheckForWin();
+        // UpdateServerTime();
+        CheckForWin();
         //}
         UpdateUI();
 	}

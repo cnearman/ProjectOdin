@@ -112,10 +112,10 @@ public class VoxelProp : BaseClass
     //only works for true spheres, none of that oval bs
     public void TakeSphereDamage(GameObject damage)
     {
-        GameObject.Find("PropDestruction").GetComponent<PropDestruction>().SphereDestroy(damage.transform.position, damage.transform.localScale.y, gameObject.name);
+        //GameObject.Find("PropDestruction").GetComponent<PropDestruction>().SphereDestroy(damage.transform.position, damage.transform.localScale.y, gameObject.name);
         //Debug.Log("boomSphere");
         //this is the worst, completely unoptimised i just want it to fucking work version
-        /*for (int x = 0; x < chunkSize; x++)
+        for (int x = 0; x < chunkSize; x++)
         {
             for (int y = 0; y < chunkSize; y++)
             {
@@ -134,7 +134,7 @@ public class VoxelProp : BaseClass
                     }
                 }
             }
-        }*/
+        }
 
         update = true;
 
@@ -142,32 +142,7 @@ public class VoxelProp : BaseClass
 
     
 
-    public void TakeSphereDamageNet(Vector3 spherePos, float sphereScale)
-    {
-
-        for (int x = 0; x < chunkSize; x++)
-        {
-            for (int y = 0; y < chunkSize; y++)
-            {
-                for (int z = 0; z < chunkSize; z++)
-                {
-                    Vector3 posCheck = x * transform.right + y * transform.up + z * transform.forward + transform.position;
-
-                    Vector3 pointToCenter = spherePos - posCheck;
-
-
-
-                    if (pointToCenter.magnitude < sphereScale / 2f)
-                    {
-                        //Debug.Log(pointToCenter.magnitude);
-                        SetBlock(x, y, z, new BlockAir());
-                    }
-                }
-            }
-        }
-
-        update = true;
-    }
+    
 
     void MakeTree()
     {
@@ -366,9 +341,9 @@ public class VoxelProp : BaseClass
         Vector4 temprow2 = new Vector4(r.y, u.y, f.y, damage.transform.position.y);
         Vector4 temprow3 = new Vector4(r.z, u.z, f.z, damage.transform.position.z);
 
-        Debug.Log(temprow1);
-        Debug.Log(temprow2);
-        Debug.Log(temprow3);
+        //Debug.Log(temprow1);
+        //Debug.Log(temprow2);
+        //Debug.Log(temprow3);
 
       
         //now we change the point to a different basis
