@@ -1,4 +1,4 @@
-﻿class Health : Attribute
+﻿class Health : inAttribute
 {
     public int StartingHealth;
 

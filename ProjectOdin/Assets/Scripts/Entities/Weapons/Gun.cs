@@ -1,7 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-class Gun : BaseClass, IWeapon
+public enum GunPriority
+{
+    Primary = 0,
+    Secondary = 1
+}
+
+public class Gun : BaseClass, IWeapon
 {
     public GameObject Projectile;
 
@@ -11,6 +17,16 @@ class Gun : BaseClass, IWeapon
 
     private float RefireTime;
     public float FireRate;
+
+    public GunPriority Priority;
+
+    public GunPriority GunPriority
+    {
+        get
+        {
+            return Priority;
+        }
+    }
 
     public bool CanFire
     {

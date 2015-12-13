@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Attributes;
 
-public class Attribute : BaseAttribute
+public class inAttribute : BaseAttribute
 {
     private List<RawBonus> RawBonuses;
     private List<FinalBonus> FinalBonuses;
