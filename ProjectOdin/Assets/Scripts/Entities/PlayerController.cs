@@ -1,25 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using EventSystem;
-using System;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(BaseModifyBlocks))]
+//[RequireComponent(typeof(BaseModifyBlocks))]
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(Jump))]
 [RequireComponent(typeof(Health))]
-[RequireComponent(typeof(Gun))]
+[RequireComponent(typeof(IWeapon))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IHealable
 {
 
     public int PlayerNumber;
     private Rigidbody RigidBodyComponent;
-    private BaseModifyBlocks BlockModifier;
+    //private BaseModifyBlocks BlockModifier;
     private Movement Movement;
     private Jump Jump;
     private Health Health;
 
-    private Gun Gun;
+    private IWeapon PrimaryGun;
+    private IWeapon SecondaryGun;
 
     private TriggerOnActivation[] internalAbilities;
 
@@ -29,12 +30,24 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
 
     void Awake()
     {
-        this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
+        //this.BlockModifier = this.gameObject.GetComponent<BaseModifyBlocks>();
         this.Movement = this.gameObject.GetComponent<Movement>();
         this.Movement.CameraContainer = this.CameraContainer;
         this.Jump = this.gameObject.GetComponent<Jump>();
         this.Health = this.gameObject.GetComponent<Health>();
-        this.Gun = this.gameObject.GetComponent<Gun>();
+        IEnumerable<IWeapon> Guns = this.gameObject.GetComponents<IWeapon>();
+        foreach(IWeapon currentGun in Guns)
+        {
+            if (currentGun.GunPriority == GunPriority.Primary)
+            {
+                this.PrimaryGun = currentGun;
+            }
+            else if (currentGun.GunPriority == GunPriority.Secondary)
+            {
+                this.SecondaryGun = currentGun;
+            }
+        }
+
         int count = 0;
         internalAbilities = new TriggerOnActivation[Abilities.Length];
         foreach (GameObject ability in Abilities)
@@ -85,14 +98,15 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
                 }
                 else if (bE.ButtonAction == ButtonAction.RightBumper)
                 {
-                    this.DestroyBlockInRay();
-                    this.Damage(10);
-                    Debug.Log("IsDead: " + IsDead);
+                    //this.DestroyBlockInRay();
+                    //this.Damage(10);
+                    //Debug.Log("IsDead: " + IsDead);
+                    this.SecondaryGun.Fire(FirePosition, FireDirection);
                 }
                 else if (bE.ButtonAction == ButtonAction.LeftBumper)
                 {
-                    this.CreateBlockInRay();
-                    this.Gun.Fire(FirePosition, FireDirection);
+                    //this.CreateBlockInRay();
+                    this.PrimaryGun.Fire(FirePosition, FireDirection);
                 }
             }
         }
@@ -127,6 +141,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
         Jump.PerformJump();
     }
 
+    /*
     private void DestroyBlockInRay()
     {
         BlockModifier.DestroyBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
@@ -136,6 +151,7 @@ public class PlayerController : NetworkBehaviour, EventListener, IDamageable, IH
     {
         BlockModifier.CreateDefaultBlock(CameraContainer.transform.position, CameraContainer.transform.forward);
     }
+    */
 
     [Command]
     private void CmdActivateAbility(int abilityNumber)
