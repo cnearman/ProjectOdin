@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class TeamTag : BaseClass {
-    //[SyncVar (hook = "OnTeamChange")]
     public int teamNumber;
     protected PhotonView m_PhotonView;
 

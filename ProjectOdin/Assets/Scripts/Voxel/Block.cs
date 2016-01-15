@@ -14,6 +14,7 @@ public class Block
     public struct Tile { public int x; public int y; }
 
     const float tileSize = 0.0625f;
+    const float tileSize2 = 0.125f;
 
     public Block()
 	{
@@ -28,9 +29,9 @@ public class Block
         Vector2[] UVs = new Vector2[4];
         Tile tilePos = TexturePosition(direction);
 
-        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize, tileSize * tilePos.y);
-        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize, tileSize * tilePos.y + tileSize);
-        UVs[2] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y + tileSize);
+        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize2, tileSize * tilePos.y);
+        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize2, tileSize * tilePos.y + tileSize2);
+        UVs[2] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y + tileSize2);
         UVs[3] = new Vector2(tileSize * tilePos.x, tileSize * tilePos.y);
 
         return UVs;
